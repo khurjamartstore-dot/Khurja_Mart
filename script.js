@@ -191,6 +191,12 @@
     var key = productName.trim().toLowerCase();
     return ALL_REVIEWS.filter(function(r){ return (r.product||"").trim().toLowerCase() === key; });
   }
+  function reviewsSummary(productName){
+    var list = getReviewsForProduct(productName);
+    if (!list.length) return { count:0, avg:0 };
+    var sum = list.reduce(function(s,r){ return s + (r.rating||0); }, 0);
+    return { count:list.length, avg: Math.round((sum/list.length)*10)/10 };
+  }
   function starsHtml(avg){
     var rounded = Math.round(avg);
     var filled = Array(rounded).fill("★").join("");
