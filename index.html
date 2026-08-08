@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khurja Mart - Original Khurja Pottery Online</title>
+<meta name="description" content="Khurja Mart - Handcrafted Khurja Pottery, Blue Pottery Vases, Dinner Sets, Cups &amp; Home Decor. Factory direct prices, Cash on Delivery available.">
+<meta property="og:title" content="Khurja Mart - Original Khurja Pottery Online">
+<meta property="og:description" content="Handcrafted Khurja Pottery, Blue Pottery Vases, Dinner Sets, Cups &amp; Home Decor. Factory direct prices.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="icon-512.png">
+
+<!-- PWA setup -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#232A63">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Khurja Mart">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="overflow-x:hidden;">
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <div class="sidebar" id="sidebar">
+    <h3>khurja<span style="color:#C9962E">mart</span></h3>
+    <button onclick="showView('home');closeSidebar()">🏠 Home</button>
+    <button onclick="showView('categoriesView');closeSidebar()">🗂️ Categories</button>
+    <button onclick="showView('wishlist');closeSidebar()">♥ Wishlist</button>
+    <button onclick="showView('cart');closeSidebar()">🛒 Cart</button>
+    <button onclick="showView('orders');closeSidebar()">📦 My Orders</button>
+    <button onclick="showView('help');closeSidebar()">❓ Help</button>
+    <button onclick="showView('account');closeSidebar()">😎 Account</button>
+  </div>
+
+  <header>
+    <div class="logo-wrap">
+      <span class="hamburger" onclick="openSidebar()">☰</span>
+      <span class="logo-badge">K</span>
+      <div class="logo-text" onclick="showView('home')">
+        <span class="logo">Khurja <span>Mart</span></span>
+        <span class="tagline">&middot; Har Zarurat, Ek Jagah</span>
+      </div>
+    </div>
+    <div class="header-search">
+      <span class="mag">🔍</span>
+      <input id="searchInput" type="text" placeholder="Search for Khurja Pottery, Dinner Sets, Vases, Cups..." oninput="renderGrid()">
+    </div>
+    <button class="search-go-btn" onclick="renderGrid()">Search</button>
+    <div class="header-icons">
+      <span class="icon-btn wish-btn" onclick="showView('wishlist')">♥<span class="icon-label">Wishlist</span><span class="badge-count" id="wishCount" style="display:none;">0</span></span>
+      <span class="icon-btn" onclick="showView('cart')">🛒<span class="icon-label">Cart</span><span class="badge-count" id="cartCount" style="display:none;">0</span></span>
+      <span class="icon-btn" onclick="showView('account')">👤<span class="icon-label">Account</span></span>
+    </div>
+  </header>
+
+  <div class="utility-bar">
+    <div class="utility-item"><span class="u-icon">🚚</span><span class="u-text"><b>Free Delivery</b><span>On orders above ₹999</span></span></div>
+    <div class="utility-item"><span class="u-icon">✅</span><span class="u-text"><b>100% Original</b><span>Khurja Pottery</span></span></div>
+    <div class="utility-item"><span class="u-icon">🏅</span><span class="u-text"><b>Premium Quality</b><span>Handcrafted</span></span></div>
+    <div class="utility-item"><span class="u-icon">🎧</span><span class="u-text"><b>Customer Support</b><span>24/7 Available</span></span></div>
+  </div>
+
+  <!-- ============ HOME VIEW ============ -->
+  <div class="view active" id="view-home">
+
+  <div class="hero-banner" id="heroBanner">
+      <div id="heroBannerSlides">
+        <div class="hero-text">
+          <div class="hero-eyebrow">MADE IN KHURJA</div>
+          <div class="hero-title">Original Khurja<br><em>Pottery</em></div>
+          <div class="hero-sub">Handcrafted with Tradition,<br>Made for Your Home.</div>
+          <span class="hero-btn" onclick="document.getElementById('productGrid').scrollIntoView({behavior:'smooth'})">Shop Now →</span>
+        </div>
+        <div class="hero-visual">🫖🏺🍽️</div>
+      </div>
+      <div class="hero-dots" id="heroBannerDots"><span class="on"></span></div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-title-row">
+        <h2>Shop By Category</h2>
+        <span class="view-all-link" onclick="showView('categoriesView')">View All ›</span>
+      </div>
+      <div class="categories" id="categoriesRow"></div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-title">
+        <span>Best Selling Products</span>
+        <span class="clear-btn" id="clearFilterBtn" style="display:none;" onclick="clearFilters()">Clear all ✕</span>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-item" id="sortLabel" onclick="cycleSort()">↕ Sort</div>
+        <div class="filter-item">
+          <span id="catLabel">Category ⌄</span>
+          <select id="catSelect" onchange="onCatSelect(this.value)"></select>
+        </div>
+        <div class="filter-item">
+          <span id="mallLabel">Type ⌄</span>
+          <select id="mallSelect" onchange="renderGrid()">
+            <option value="all">All</option>
+            <option value="mall">Mall Verified</option>
+          </select>
+        </div>
+        <div class="filter-item" id="discFilter" onclick="toggleDiscountFilter()">🏷️ 50%+ off</div>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+      <div class="empty-msg" id="emptyMsg" style="display:none;">Koi product nahi mila 😕 <br>Search ya filter change karke dekhiye.</div>
+    </div>
+<section class="flash-sale" id="flashSaleSection" style="display:none;">
+    <div class="flash-header">
+        <h2>🔥 Flash Sale</h2>
+        <span id="flashSaleSubtext">Limited Time Offers</span>
+    </div>
+
+    <div class="flash-products" id="flashProductsBox">
+    </div>
+</section>
+    <div class="promo-banner">
+      <div class="promo-main">
+        <div class="promo-icons">🏺🏺</div>
+        <div class="promo-text">
+          <h3>Factory Direct Prices</h3>
+          <p>Best Quality. Best Prices. Only on Khurja Mart.</p>
+          <span class="promo-btn" onclick="onCatClick(null);showView('home')">Explore Now →</span>
+        </div>
+      </div>
+      <div class="promo-features">
+        <div class="promo-feature"><span class="p-icon">📦</span><span><b>Secure Packaging</b><span>Damage Free Delivery</span></span></div>
+        <div class="promo-feature"><span class="p-icon">↩️</span><span><b>Easy Returns</b><span>7 Days Return Policy</span></span></div>
+        <div class="promo-feature"><span class="p-icon">🚚</span><span><b>Pay on Delivery</b><span>Cash on Delivery</span></span></div>
+        <div class="promo-feature"><span class="p-icon">🔒</span><span><b>Safe &amp; Secure</b><span>100% Secure Payments</span></span></div>
+      </div>
+    </div>
+
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="footer-col footer-brand">
+        <div class="footer-logo">🛍️ <span>KHURJA<br>MART</span></div>
+        <p class="footer-tagline">One Shop All Products</p>
+        <p class="footer-about">Khurja Mart is your one-stop destination for the best quality plants, crockery and home decoration items.</p>
+        <div class="footer-social">
+          <span>📘</span><span>📷</span><span>▶️</span><span>💬</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <div onclick="showView('help')">› About Us</div>
+        <div onclick="showView('help')">› Contact Us</div>
+        <div onclick="showView('help')">› Our Story</div>
+        <div onclick="showView('help')">› Careers</div>
+        <div onclick="showView('help')">› Blog</div>
+        <div onclick="showView('orders')">› Track Your Order</div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <div onclick="onCatClick(null);showView('home')">🌱 Plants</div>
+        <div onclick="onCatClick(null);showView('home')">☕ Crockery</div>
+        <div onclick="onCatClick(null);showView('home')">🏠 Home Decoration</div>
+        <div onclick="onCatClick(null);showView('home')">🎁 Gift Items</div>
+        <div onclick="onCatClick(null);showView('home')">⭐ New Arrivals</div>
+        <div onclick="onCatClick(null);showView('home')">🔥 Best Sellers</div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Customer Service</h4>
+        <div onclick="showView('orders')">› My Orders</div>
+        <div onclick="showView('help')">› Shipping Policy</div>
+        <div onclick="showView('help')">› Return &amp; Refund Policy</div>
+        <div onclick="showView('help')">› Cancellation Policy</div>
+        <div onclick="showView('help')">› Privacy Policy</div>
+        <div onclick="showView('help')">› Terms &amp; Conditions</div>
+        <div onclick="showView('help')">› FAQ</div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div>✉️ khurjamartstore@gmail.com</div>
+        <div>📞 9045458950 <span class="fmuted">(Call / WhatsApp)</span></div>
+        <div>📞 8532093467 <span class="fmuted">(Call / WhatsApp)</span></div>
+        <div>📍 Khurja, Bulandshahr, Uttar Pradesh, India - 203131</div>
+        <div>🕐 Mon - Sun | 9:00 AM - 8:00 PM</div>
+      </div>
+    </div>
+
+    <div class="footer-badges">
+      <div class="badge-group">
+        <h5>Secure Payment</h5>
+        <div class="badge-row">
+          <span class="pay-badge">UPI</span>
+          <span class="pay-badge">PhonePe</span>
+          <span class="pay-badge">GPay</span>
+          <span class="pay-badge">Paytm</span>
+          <span class="pay-badge">VISA</span>
+          <span class="pay-badge">Mastercard</span>
+        </div>
+      </div>
+      <div class="badge-group">
+        <h5>Delivery Partners</h5>
+        <div class="badge-row">
+          <span class="pay-badge">Delhivery</span>
+          <span class="pay-badge">DTDC</span>
+          <span class="pay-badge">India Post</span>
+          <span class="pay-badge">XpressBees</span>
+        </div>
+      </div>
+      <div class="badge-group">
+        <h5>Why Shop With Us?</h5>
+        <div class="badge-row">
+          <span class="why-item">🛡️ Best Quality</span>
+          <span class="why-item">🚚 Safe Delivery</span>
+          <span class="why-item">↩️ Easy Returns</span>
+          <span class="why-item">✅ 100% Trusted</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Khurja Mart. All Rights Reserved. &nbsp;|&nbsp; Made with 💛 in India
+    </div>
+  </footer>
+  </div>
+
+  <div class="view" id="view-categoriesView">
+    <div class="section-title"><span>All Categories</span></div>
+    <div class="list-wrap" id="allCategoriesList"></div>
+  </div>
+
+  <!-- ============ PRODUCT DETAIL ============ -->
+  <div class="view" id="view-detail">
+    <div class="detail-wrap">
+      <span class="back-btn" onclick="showView('home')">← Back</span>
+      <div class="detail-img" id="detailImg"></div>
+      <span class="badge-mall" id="detailMallBadge">✓ Mall</span>
+      <div class="detail-name" id="detailName"></div>
+      <div class="rating-row" id="detailRatingRow"></div>
+      <div class="price-row">
+        <span class="detail-price" id="detailPrice"></span>
+        <span class="price-old" id="detailOldPrice"></span>
+        <span class="price-off" id="detailOff"></span>
+      </div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="changeDetailQty(-1)">−</button>
+        <span id="detailQty">1</span>
+        <button class="qty-btn" onclick="changeDetailQty(1)">+</button>
+      </div>
+      <div class="detail-desc" id="detailDesc"></div>
+      <div class="detail-policy-box">
+        <div class="policy-row"><span class="policy-icon">🚚</span><div><b>Delivery</b><span>5–7 business days, pan India</span></div></div>
+        <div class="policy-row"><span class="policy-icon">🔄</span><div><b>7 Days Replacement</b><span>Damaged ya wrong item par free replacement (handmade items ki wajah se return available nahi)</span></div></div>
+        <div class="policy-row"><span class="policy-icon">💵</span><div><b>Cash on Delivery</b><span>Available hai is product par</span></div></div>
+        <div class="policy-row"><span class="policy-icon">🛡️</span><div><b>Secure Packaging</b><span>Har item bubble-wrap ke saath carefully pack hota hai</span></div></div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn-primary" id="detailAddBtn" onclick="addDetailToCart()">Add to Cart</button>
+        <button class="btn-secondary" onclick="buyNowDetail()">Buy Now</button>
+      </div>
+      <div class="detail-reviews-section">
+        <h3 class="reviews-heading">Customer Reviews</h3>
+        <div id="detailReviewsBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ WISHLIST VIEW ============ -->
+  <div class="view" id="view-wishlist">
+    <div class="section-title"><span>My Wishlist</span></div>
+    <div class="product-grid" id="wishlistGrid"></div>
+    <div class="empty-msg" id="wishlistEmpty" style="display:none;">Aapki wishlist khali hai 🤍</div>
+  </div>
+
+  <!-- ============ CART VIEW ============ -->
+  <div class="view" id="view-cart">
+    <div class="section-title"><span>My Cart</span></div>
+    <div class="list-wrap" id="cartList"></div>
+    <div class="empty-msg" id="cartEmpty" style="display:none;">Aapka cart khali hai 🛒 <br><span style="color:var(--navy);font-weight:700;cursor:pointer;" onclick="showView('home')">Shopping shuru karein</span></div>
+    <div class="cart-summary" id="cartSummary" style="display:none;">
+      <span class="cart-total">Total: ₹<span id="cartTotalAmt">0</span></span>
+      <button class="btn-primary" style="flex:none;padding:12px 26px;" onclick="showView('checkout')">Checkout</button>
+    </div>
+  </div>
+
+  <!-- ============ CHECKOUT VIEW ============ -->
+  <div class="view" id="view-checkout">
+    <div class="section-title"><span>Checkout</span></div>
+    <div class="list-wrap">
+      <div class="order-summary-box" id="checkoutSummary"></div>
+      <div class="form-group" style="margin-top:4px;">
+        <label>Coupon Code</label>
+        <div style="display:flex;gap:8px;">
+          <input id="couponCodeInput" type="text" placeholder="e.g. KHURJA10" style="flex:1;text-transform:uppercase;">
+          <button type="button" class="btn-secondary" style="flex:none;padding:10px 16px;" onclick="applyCouponCode()">Apply</button>
+        </div>
+        <div id="couponMsg" style="font-size:12.5px;margin-top:6px;"></div>
+      </div>
+      <div class="form-group"><label>Full Name</label><input id="chkName" type="text" placeholder="Apna naam likhein"></div>
+      <div class="form-group"><label>Phone Number</label><input id="chkPhone" type="text" placeholder="10-digit mobile number"></div>
+      <div class="form-group"><label>Delivery Address</label><textarea id="chkAddress" rows="3" placeholder="Poora address likhein"></textarea></div>
+      <div class="form-group"><label>Payment Method</label>
+        <select id="chkPayment" style="width:100%;padding:12px;border:1px solid var(--grey-border);border-radius:8px;">
+          <option>Cash on Delivery</option>
+          <option>UPI</option>
+          <option>Credit / Debit Card</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:8px;" onclick="placeOrder()">Place Order</button>
+    </div>
+  </div>
+
+  <!-- ============ ORDERS VIEW ============ -->
+  <div class="view" id="view-orders">
+    <div class="section-title"><span>My Orders</span></div>
+    <div class="list-wrap" id="ordersList"></div>
+    <div class="empty-msg" id="ordersEmpty" style="display:none;">Abhi tak koi order nahi hai 📦</div>
+  </div>
+
+  <!-- ============ HELP VIEW ============ -->
+  <div class="view" id="view-help">
+    <div class="section-title"><span>Help Center</span></div>
+    <div class="help-item"><h4>📦 Order kaise track karein?</h4><p>My Orders section mein jaakar apne order ka status dekh sakte hain.</p></div>
+    <div class="help-item"><h4>↩️ Return/Refund policy</h4><p>Product delivery ke 7 din ke andar return kar sakte hain, agar wo damaged ya defective ho.</p></div>
+    <div class="help-item"><h4>💳 Payment options</h4><p>Cash on Delivery, UPI aur Card payments sabhi available hain.</p></div>
+    <div class="help-item"><h4>📞 Contact us</h4><p>khurjamartstore@gmail.com par email karein ya 90454 58950 / 85320 93467 par call karein.</p></div>
+  </div>
+
+  <!-- ============ ACCOUNT VIEW ============ -->
+  <div class="view" id="view-account">
+    <div class="section-title"><span>Account</span></div>
+    <div class="account-row" onclick="showView('orders')"><span>📦 My Orders</span><span class="arrow">›</span></div>
+    <div class="account-row" onclick="showView('wishlist')"><span>♥ Wishlist</span><span class="arrow">›</span></div>
+    <div class="account-row"><span>📍 Saved Addresses</span><span class="arrow">›</span></div>
+    <div class="account-row" onclick="showView('help')"><span>❓ Help Center</span><span class="arrow">›</span></div>
+   <div id="loginRow" class="account-row" onclick="showLogin()">
+    <span>🔑 Login / Sign Up</span>
+    <span class="arrow">›</span>
+  </div>
+  <div id="userInfo" style="display:none;padding:15px;text-align:center;">
+  <p id="userEmail"></p>
+  <div class="account-row" onclick="enableFingerprintLogin()"><span>🔒 Fingerprint Login Enable Karein</span><span class="arrow">›</span></div>
+  <button onclick="logoutUser()">Logout</button>
+</div>
+  </div>
+
+
+  <div class="toast" id="toast"></div>
+
+  <div id="installBanner" style="display:none;position:fixed;left:12px;right:12px;bottom:64px;z-index:150;
+    background:#222;color:#fff;border-radius:12px;padding:12px 14px;align-items:center;justify-content:space-between;gap:10px;">
+    <span style="font-size:13.5px;flex:1;">📲 Khurja Mart ko app ki tarah install karein</span>
+    <button id="installBtn" style="background:var(--navy);color:#fff;font-weight:700;padding:8px 14px;border-radius:8px;font-size:13px;">Install</button>
+    <button id="dismissInstallBtn" style="color:#bbb;font-size:18px;padding:0 4px;">✕</button>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" data-nav="home" onclick="showView('home')"><span class="nav-icon">🏠</span><span>Home</span></div>
+    <div class="nav-item" data-nav="categoriesView" onclick="showView('categoriesView')"><span class="nav-icon">🗂️</span><span>Categories</span></div>
+    <div class="nav-item" data-nav="cart" onclick="showView('cart')"><span class="nav-icon">🛒<span class="nav-badge" id="navCartCount" style="display:none;">0</span></span><span>Cart</span></div>
+    <div class="nav-item" data-nav="orders" onclick="showView('orders')"><span class="nav-icon">📦</span><span>Orders</span></div>
+    <div class="nav-item" data-nav="account" onclick="showView('account')"><span class="nav-icon">👤</span><span>Account</span></div>
+  </div>
+
+<script src="script.js"></script>
+<script type="module" src="firebase.js"></script>
+<div id="loginModal" class="auth-overlay">
+  <div class="auth-card">
+    <button type="button" class="auth-close" onclick="closeLogin()" aria-label="Close">✕</button>
+
+    <div class="auth-logo">
+      <span class="auth-logo-text">Khurja<span>Mart</span></span>
+      <span class="auth-tagline">Har Zarurat, Ek Jagah</span>
+    </div>
+
+    <h2 class="auth-title" id="authTitle">Welcome Back!</h2>
+    <p class="auth-subtitle" id="authSubtitle">Login to continue shopping with us</p>
+
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Login</button>
+      <button type="button" class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Sign Up</button>
+      <span class="auth-tab-track"><span class="auth-tab-underline" id="authTabUnderline"></span></span>
+    </div>
+
+    <div class="auth-field">
+      <span class="auth-field-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 6.5C3 5.67 3.67 5 4.5 5h15c.83 0 1.5.67 1.5 1.5v11c0 .83-.67 1.5-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Z" stroke="#fff" stroke-width="1.8"/><path d="m4 6.5 8 6.2 8-6.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <input id="loginEmail" type="email" placeholder="Email Address" autocomplete="username">
+    </div>
+
+    <div class="auth-field">
+      <span class="auth-field-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="4" y="10.5" width="16" height="10" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </span>
+      <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
+      <button type="button" class="auth-eye-btn" id="authEyeBtn" onclick="toggleAuthPassword()" aria-label="Show password">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" stroke="#8A8F98" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="#8A8F98" stroke-width="1.7"/></svg>
+      </button>
+    </div>
+
+    <div class="auth-options" id="authOptionsRow">
+      <label class="auth-remember">
+        <input type="checkbox" id="rememberMeChk" checked>
+        <span class="auth-check"></span>
+        <span class="auth-remember-text">Remember me</span>
+      </label>
+      <span class="auth-forgot" onclick="forgotPassword()">Forgot Password?</span>
+    </div>
+
+    <button type="button" class="auth-submit-btn" id="authSubmitBtn" onclick="submitAuth()">
+      <span id="authSubmitLabel">Login</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+
+    <div class="auth-social-row">
+      <button type="button" class="auth-social-btn" onclick="socialLogin('google')">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4c-7.5 0-14 4.2-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.6C29.6 35 26.9 36 24 36c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.9 39.7 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.6 5.6C41.6 36 44 30.6 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
+        <span>Google</span>
+      </button>
+      <button type="button" class="auth-social-btn" onclick="socialLogin('facebook')">
+        <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path fill="#fff" d="M15.1 12.7h-2v7h-2.9v-7H8.6V10h1.6V8.6c0-1.6.7-2.6 2.7-2.6h1.9v2.4h-1.2c-.8 0-.9.3-.9 1v1.6h2.1l-.2 2.7Z"/></svg>
+        <span>Facebook</span>
+      </button>
+      <button type="button" class="auth-social-btn" onclick="continueAsGuest()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1E3A8A" stroke-width="1.8"/><path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5" stroke="#1E3A8A" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Guest</span>
+      </button>
+    </div>
+
+    <div class="auth-fingerprint-row" onclick="loginWithFingerprint()">
+      <span class="auth-fp-icon">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M12 2a8 8 0 0 0-8 8v2a12 12 0 0 0 1.6 6" stroke="#1E3A8A" stroke-width="1.6" stroke-linecap="round"/><path d="M12 5a7 7 0 0 1 7 7v1.5" stroke="#1E3A8A" stroke-width="1.6" stroke-linecap="round"/><path d="M8 10a4 4 0 0 1 8 0v3a9 9 0 0 0 1.2 4.5" stroke="#1E3A8A" stroke-width="1.6" stroke-linecap="round"/><path d="M12 10v3a6 6 0 0 0 3 5.2" stroke="#1E3A8A" stroke-width="1.6" stroke-linecap="round"/><path d="M8 13.5A9 9 0 0 0 12.5 21" stroke="#1E3A8A" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+      <span class="auth-fp-text"><b>Login with Fingerprint</b><span>Quick &amp; Secure Login</span></span>
+      <span class="auth-fp-arrow">›</span>
+    </div>
+
+    <div class="auth-footer">Need Help? <span onclick="closeLogin();showView('help')">Contact Us</span></div>
+  </div>
+</div>
+</body>
+</html>
