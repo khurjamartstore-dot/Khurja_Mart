@@ -940,15 +940,19 @@ window.switchAuthTab = function (mode) {
     var subtitle = document.getElementById("authSubtitle");
     var optionsRow = document.getElementById("authOptionsRow");
     var submitLabel = document.getElementById("authSubmitLabel");
+    var bottomSignup = document.getElementById("authBottomSignupLink");
+    var bottomLogin = document.getElementById("authBottomLoginLink");
     if (!loginTab) return;
     if (mode === "login") {
         loginTab.classList.add("active");
         signupTab.classList.remove("active");
         underline.style.transform = "translateX(0%)";
-        title.textContent = "Welcome Back!";
-        subtitle.textContent = "Login to continue shopping with us";
+        title.textContent = "Welcome Back";
+        subtitle.textContent = "Login to your account to continue";
         optionsRow.style.display = "flex";
         submitLabel.textContent = "Login";
+        if (bottomSignup) bottomSignup.style.display = "block";
+        if (bottomLogin) bottomLogin.style.display = "none";
     } else {
         signupTab.classList.add("active");
         loginTab.classList.remove("active");
@@ -957,6 +961,8 @@ window.switchAuthTab = function (mode) {
         subtitle.textContent = "Sign up to start shopping with us";
         optionsRow.style.display = "none";
         submitLabel.textContent = "Sign Up";
+        if (bottomSignup) bottomSignup.style.display = "none";
+        if (bottomLogin) bottomLogin.style.display = "block";
     }
 };
 
@@ -976,119 +982,4 @@ window.toggleAuthPassword = function () {
 window.submitAuth = function () {
     if (authMode === "login") window.loginUser();
     else window.signUpUser();
-};
-
-window.continueAsGuest = function () {
-    closeLogin();
-    showToast("Guest ke roop mein shopping jaari rakhein 🛍️");
-};
-
-// ================= Fingerprint / Face ID Login (WebAuthn, 100% free) =================
-// Ye Firebase ka feature nahi hai — Firebase khud biometric login support nahi karta.
-// Iski jagah browser ka WebAuthn API use kiya hai jo seedha phone/laptop ke
-// asli fingerprint ya Face ID sensor ko trigger karta hai. Ismein koi backend,
-// Cloud Function, ya Blaze (paid) plan nahi lagta — pura kaam browser + is
-// device ke localStorage mein hota hai.
-//
-// IMPORTANT samajhne wali baat: ye ek naya account "create" nahi karta.
-// Pehle user ko email/password (ya Google) se ek baar normal login karna
-// zaroori hai. Uske baad "Fingerprint Login Enable Karein" dabane se is
-// device ke liye fingerprint judh jaata hai. Agli baar bina password type
-// kiye, sirf fingerprint se turant unlock ho jaata hai — bilkul jaise
-// banking apps ka "App Lock" feature kaam karta hai.
-// Requirement: site HTTPS par honi chahiye (WebAuthn sirf secure context
-// mein chalta hai) aur browser/device mein fingerprint/Face ID hardware ho.
-
-function b64encode(buf) {
-  var bytes = new Uint8Array(buf);
-  var binary = "";
-  for (var i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-  return btoa(binary);
-}
-function b64decode(b64) {
-  var binary = atob(b64);
-  var bytes = new Uint8Array(binary.length);
-  for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  return bytes.buffer;
-}
-
-window.enableFingerprintLogin = async function () {
-  if (!window.currentUser) {
-    showToast("Pehle email/Google se login karein, phir fingerprint enable karein 🔒");
-    showLogin();
-    return;
-  }
-  if (!window.PublicKeyCredential) {
-    showToast("Ye browser fingerprint login support nahi karta 😕");
-    return;
-  }
-  try {
-    var challenge = crypto.getRandomValues(new Uint8Array(32));
-    var userIdBytes = new TextEncoder().encode(window.currentUser.uid);
-    var cred = await navigator.credentials.create({
-      publicKey: {
-        challenge: challenge,
-        rp: { name: "Khurja Mart" },
-        user: {
-          id: userIdBytes,
-          name: window.currentUser.email || "user",
-          displayName: window.currentUser.email || "user"
-        },
-        pubKeyCredParams: [
-          { type: "public-key", alg: -7 },
-          { type: "public-key", alg: -257 }
-        ],
-        authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
-        timeout: 60000
-      }
-    });
-    localStorage.setItem("khurjaFpCredential", JSON.stringify({
-      email: window.currentUser.email,
-      id: b64encode(cred.rawId)
-    }));
-    showToast("Fingerprint login enable ho gaya! 🎉");
-  } catch (e) {
-    showToast("Fingerprint set nahi ho paaya (cancel ya unsupported device)");
-  }
-};
-
-window.loginWithFingerprint = async function () {
-  var saved = localStorage.getItem("khurjaFpCredential");
-  if (!saved) {
-    if (window.currentUser) {
-      closeLogin();
-      showToast("Pehle Account mein jaakar 'Fingerprint Login Enable Karein' dabayein 🔒");
-    } else {
-      showToast("Fingerprint abhi set nahi hai — pehle email se login karein 🔑");
-    }
-    return;
-  }
-  if (!window.PublicKeyCredential) {
-    showToast("Ye browser fingerprint login support nahi karta 😕");
-    return;
-  }
-  try {
-    var data = JSON.parse(saved);
-    var challenge = crypto.getRandomValues(new Uint8Array(32));
-    var assertion = await navigator.credentials.get({
-      publicKey: {
-        challenge: challenge,
-        allowCredentials: [{ id: b64decode(data.id), type: "public-key" }],
-        userVerification: "required",
-        timeout: 60000
-      }
-    });
-    if (assertion) {
-      if (window.currentUser) {
-        showToast("Fingerprint verified ✅");
-        closeLogin();
-        if (typeof window.runPendingAuthAction === "function") window.runPendingAuthAction();
-      } else {
-        showToast("Fingerprint verified, lekin session expire ho gaya — email se dobara login karein 🔑");
-        switchAuthTab("login");
-      }
-    }
-  } catch (e) {
-    showToast("Fingerprint verify nahi hua, dobara try karein");
-  }
 };
