@@ -315,6 +315,11 @@
       if (el) el.classList.add("active");
     }
 
+    var sideBtns = document.querySelectorAll(".sidebar-btn");
+    for (var k=0;k<sideBtns.length;k++){ sideBtns[k].classList.remove("active"); }
+    var sideBtn = document.querySelector('.sidebar-btn[data-view="' + name + '"]');
+    if (sideBtn) sideBtn.classList.add("active");
+
     if (name === "wishlist") renderWishlist();
     if (name === "cart") renderCart();
     if (name === "checkout") renderCheckout();
@@ -558,6 +563,11 @@
     if (navCartBadge){
       navCartBadge.textContent = cartCount;
       navCartBadge.style.display = cartCount > 0 ? "flex" : "none";
+    }
+    var sideCartBadge = document.getElementById("sidebarCartCount");
+    if (sideCartBadge){
+      sideCartBadge.textContent = cartCount;
+      sideCartBadge.style.display = cartCount > 0 ? "flex" : "none";
     }
   }
 

@@ -83,8 +83,13 @@
   }
   .sidebar.open{transform:translateX(0);}
   .sidebar h3{padding:0 18px 14px;color:var(--navy);font-size:20px;}
-  .sidebar button{display:block;width:100%;text-align:left;padding:12px 18px;font-size:15px;color:#333;}
+  .sidebar button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 18px;font-size:15px;color:var(--navy);font-weight:600;position:relative;border-left:3px solid transparent;}
   .sidebar button:active{background:#F1EEFA;}
+  .sidebar-btn.active{background:#EFEEF8;border-left:3px solid var(--navy);}
+  .sidebar-cart-badge{
+    background:var(--gold,#C9962E);color:#fff;font-size:11px;font-weight:700;border-radius:50%;
+    min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;padding:0 2px;
+  }
 
   /* ===== Hero banner ===== */
   .hero-banner{
@@ -284,7 +289,10 @@
   .account-row .arrow{color:#aaa;}
   .account-row small{color:var(--grey-text);font-size:11.5px;font-weight:400;}
 
-  .acct-icon-btn{position:relative;font-size:19px;cursor:pointer;color:var(--navy);}
+  .ico{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;}
+  .ico-lg{width:28px;height:28px;}
+  .ico-sm{width:14px;height:14px;}
+  .acct-icon-btn{position:relative;cursor:pointer;color:var(--navy);display:inline-flex;align-items:center;}
   .acct-notif-badge{
     position:absolute;top:-6px;right:-9px;background:var(--pink,#E74C3C);color:#fff;font-size:9.5px;font-weight:700;
     border-radius:50%;min-width:15px;height:15px;display:flex;align-items:center;justify-content:center;padding:0 2px;
@@ -296,11 +304,11 @@
   }
   .profile-avatar{
     width:56px;height:56px;border-radius:50%;background:#EEF0F6;color:var(--navy);
-    display:flex;align-items:center;justify-content:center;font-size:26px;flex:none;
+    display:flex;align-items:center;justify-content:center;flex:none;
   }
   .profile-info{flex:1;min-width:150px;}
   .profile-name{font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:4px;}
-  .profile-line{font-size:12.5px;color:var(--grey-text);margin-top:2px;}
+  .profile-line{font-size:12.5px;color:var(--grey-text);margin-top:2px;display:flex;align-items:center;gap:6px;}
   .edit-profile-btn{
     border:1.5px solid var(--navy);color:var(--navy);font-size:12.5px;font-weight:700;
     padding:8px 14px;border-radius:20px;
@@ -311,7 +319,7 @@
     border:1px solid var(--grey-border);border-radius:12px;padding:12px 4px;text-align:center;
     display:flex;flex-direction:column;align-items:center;gap:4px;
   }
-  .acct-stat-icon{font-size:18px;}
+  .acct-stat-icon{display:flex;align-items:center;justify-content:center;color:var(--navy);}
   .acct-stat-label{font-size:10.5px;color:#444;font-weight:600;line-height:1.2;}
   .acct-stat-value{font-size:11px;color:var(--gold);font-weight:700;}
 
@@ -326,7 +334,7 @@
     flex:1;min-width:64px;display:flex;flex-direction:column;align-items:center;gap:4px;
     padding:8px 4px;cursor:pointer;
   }
-  .order-stat-icon{font-size:18px;}
+  .order-stat-icon{display:flex;align-items:center;justify-content:center;color:var(--navy);}
   .order-stat-item span{font-size:10px;color:#555;font-weight:600;}
   .order-stat-item b{font-size:15px;color:var(--navy);}
 
