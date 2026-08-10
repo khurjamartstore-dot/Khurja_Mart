@@ -20,8 +20,12 @@ import {
   collection,
   doc,
   addDoc,
+  setDoc,
+  getDoc,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -55,6 +59,7 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("userInfo").style.display = "none";
     document.getElementById("loginRow").style.display = "flex";
   }
+  if (typeof window.loadMyAccountData === "function") window.loadMyAccountData();
 });
 function notify(msg){
   if (typeof window.showToast === "function") window.showToast(msg);
@@ -126,6 +131,19 @@ window.socialLogin = async function (provider) {
       await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
       await signInWithPopup(auth, new GoogleAuthProvider());
       notify("Google se login ho gaya! 🎉");
+      closeLogin();
+    } catch (e) {
+      notify(e.message);
+    }
+    return;
+  }
+  if (provider === "facebook") {
+    try {
+      const rememberChk = document.getElementById("rememberMeChk");
+      const remember = !rememberChk || rememberChk.checked;
+      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+      await signInWithPopup(auth, new FacebookAuthProvider());
+      notify("Facebook se login ho gaya! 🎉");
       closeLogin();
     } catch (e) {
       notify(e.message);
@@ -226,4 +244,59 @@ window.subscribeToReviews = function (callback) {
       console.warn("Reviews sync error:", error);
     }
   );
+};
+
+// ===== User Profile (name, phone, saved addresses) — stored under users/{uid},
+// so it follows the account across devices (not just this browser). =====
+window.saveUserProfile = async function (data) {
+  const user = window.currentUser;
+  if (!user) return false;
+  try {
+    await setDoc(doc(db, "users", user.uid), data, { merge: true });
+    return true;
+  } catch (error) {
+    console.warn("Profile save failed:", error);
+    return false;
+  }
+};
+
+window.getUserProfile = async function () {
+  const user = window.currentUser;
+  if (!user) return null;
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    return snap.exists() ? snap.data() : {};
+  } catch (error) {
+    console.warn("Profile load failed:", error);
+    return {};
+  }
+};
+
+// ===== Customer's own orders — real-time, matched by phone number (the same
+// field every order is saved with), so "My Orders" always shows the true,
+// live status (Pending/Shipped/Delivered/Cancelled) set from the admin panel —
+// not just a static "Confirmed" label frozen at checkout time. =====
+window.subscribeToMyOrders = function (phone, callback) {
+  if (!phone) { callback([]); return function(){}; }
+  const ordersRef = collection(db, "orders");
+  const q = query(ordersRef, where("phone", "==", phone));
+  return onSnapshot(q, (snapshot) => {
+    const orders = [];
+    snapshot.forEach((d) => {
+      const data = d.data();
+      orders.push(Object.assign({}, data, {
+        _fsId: d.id,
+        status: (!data.status || data.status === "confirmed") ? "Pending" : data.status
+      }));
+    });
+    orders.sort((a, b) => {
+      const at = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+      const bt = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+      return bt - at;
+    });
+    callback(orders);
+  }, (error) => {
+    console.warn("My orders sync error:", error);
+    callback([]);
+  });
 };

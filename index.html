@@ -434,19 +434,149 @@
 
   <!-- ============ ACCOUNT VIEW ============ -->
   <div class="view" id="view-account">
-    <div class="section-title"><span>Account</span></div>
-    <div class="account-row" onclick="showView('orders')"><span>📦 My Orders</span><span class="arrow">›</span></div>
-    <div class="account-row" onclick="showView('wishlist')"><span>♥ Wishlist</span><span class="arrow">›</span></div>
-    <div class="account-row"><span>📍 Saved Addresses</span><span class="arrow">›</span></div>
-    <div class="account-row" onclick="showView('help')"><span>❓ Help Center</span><span class="arrow">›</span></div>
-   <div id="loginRow" class="account-row" onclick="showLogin()">
-    <span>🔑 Login / Sign Up</span>
-    <span class="arrow">›</span>
+    <div class="section-title-row" style="padding:18px 16px 10px;">
+      <h2>My Account</h2>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <span class="acct-icon-btn" onclick="showView('notifications')" title="Notifications">
+          🔔<span class="acct-notif-badge" id="acctNotifBadge" style="display:none;">0</span>
+        </span>
+        <span class="acct-icon-btn" onclick="showView('settings')" title="Settings">⚙️</span>
+      </div>
+    </div>
+
+    <div id="loginRow" class="account-row" onclick="showLogin()">
+      <span>🔑 Login / Sign Up</span>
+      <span class="arrow">›</span>
+    </div>
+
+    <div id="userInfo" style="display:none;">
+      <div class="profile-card">
+        <div class="profile-avatar">👤</div>
+        <div class="profile-info">
+          <div class="profile-name" id="profileNameDisplay">Khurja Mart Customer</div>
+          <div class="profile-line">✉️ <span id="userEmail"></span></div>
+          <div class="profile-line" id="profilePhoneLine" style="display:none;">📞 <span id="profilePhoneDisplay"></span></div>
+        </div>
+        <button class="edit-profile-btn" onclick="openEditProfile()">Edit Profile <span>›</span></button>
+      </div>
+
+      <div class="acct-stats-grid">
+        <div class="acct-stat-card" onclick="showView('addresses')"><span class="acct-stat-icon">📍</span><span class="acct-stat-label">My Addresses</span><span class="acct-stat-value" id="statAddresses">0 Saved</span></div>
+        <div class="acct-stat-card" onclick="showView('help')"><span class="acct-stat-icon">💳</span><span class="acct-stat-label">Payment</span><span class="acct-stat-value">COD Available</span></div>
+        <div class="acct-stat-card" onclick="showView('wishlist')"><span class="acct-stat-icon">♥</span><span class="acct-stat-label">Wishlist</span><span class="acct-stat-value" id="statWishlist">0 Items</span></div>
+        <div class="acct-stat-card" onclick="showView('coupons')"><span class="acct-stat-icon">🎟️</span><span class="acct-stat-label">Coupons</span><span class="acct-stat-value" id="statCoupons">0 Available</span></div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-card-head"><span>My Orders</span><span class="view-all-link" onclick="showView('orders')">View All Orders ›</span></div>
+        <div class="acct-orders-stats">
+          <div class="order-stat-item" onclick="showView('orders')"><span class="order-stat-icon">📋</span><span>All Orders</span><b id="ordAll">0</b></div>
+          <div class="order-stat-item" title="Payment gateway jodne ke baad activate hoga" onclick="showToast('Ye payment gateway jodne ke baad activate hoga')"><span class="order-stat-icon">💰</span><span>To Pay</span><b>—</b></div>
+          <div class="order-stat-item" title="Payment gateway jodne ke baad activate hoga" onclick="showToast('Ye payment gateway jodne ke baad activate hoga')"><span class="order-stat-icon">⚙️</span><span>Processing</span><b>—</b></div>
+          <div class="order-stat-item" onclick="showView('orders')"><span class="order-stat-icon">⏳</span><span>Pending</span><b id="ordPending">0</b></div>
+          <div class="order-stat-item" onclick="showView('orders')"><span class="order-stat-icon">🚚</span><span>Shipped</span><b id="ordShipped">0</b></div>
+          <div class="order-stat-item" onclick="showView('orders')"><span class="order-stat-icon">✅</span><span>Delivered</span><b id="ordDelivered">0</b></div>
+          <div class="order-stat-item" onclick="showView('orders')"><span class="order-stat-icon">🚫</span><span>Cancelled</span><b id="ordCancelled">0</b></div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="account-row" onclick="showView('addresses')"><span>📍 My Addresses<br><small>Manage your saved addresses</small></span><span class="arrow">›</span></div>
+        <div class="account-row" onclick="showView('wishlist')"><span>♥ Wishlist<br><small>Your favorite products</small></span><span class="arrow">›</span></div>
+        <div class="account-row" onclick="showView('coupons')"><span>🎟️ My Coupons<br><small>View and manage your coupons</small></span><span class="arrow">›</span></div>
+        <div class="account-row" onclick="showView('recentlyViewed')"><span>👁️ Recently Viewed<br><small>Products you viewed recently</small></span><span class="arrow">›</span></div>
+      </div>
+
+      <div class="panel-card">
+        <div class="account-row" onclick="showView('help')"><span>🎧 Help &amp; Support<br><small>Get help, contact us, FAQs</small></span><span class="arrow">›</span></div>
+        <div class="account-row" onclick="showView('settings')"><span>⚙️ Settings<br><small>Order update preferences</small></span><span class="arrow">›</span></div>
+        <div class="account-row" onclick="logoutUser()"><span>🚪 Logout<br><small>Sign out from your account</small></span><span class="arrow">›</span></div>
+      </div>
+    </div>
   </div>
-  <div id="userInfo" style="display:none;padding:15px;text-align:center;">
-  <p id="userEmail"></p>
-  <button onclick="logoutUser()">Logout</button>
-</div>
+
+  <!-- ============ EDIT PROFILE MODAL ============ -->
+  <div class="auth-overlay" id="editProfileModal">
+    <div class="auth-card">
+      <button type="button" class="auth-close" onclick="closeEditProfile()">✕</button>
+      <h2 class="auth-title">Edit Profile</h2>
+      <p class="auth-subtitle">Update your name and phone number</p>
+      <label class="auth-label">Full Name</label>
+      <div class="auth-field"><input id="editProfileName" placeholder="Enter your full name"></div>
+      <label class="auth-label">Phone Number</label>
+      <div class="auth-field"><input id="editProfilePhone" type="tel" placeholder="Enter your phone number"></div>
+      <button type="button" class="auth-submit-btn" onclick="saveEditProfile()"><span>Save Changes</span></button>
+    </div>
+  </div>
+
+  <!-- ============ MY ADDRESSES ============ -->
+  <div class="view" id="view-addresses">
+    <div class="section-title"><span>My Addresses</span></div>
+    <div style="padding:0 16px;">
+      <span class="back-btn" onclick="showView('account')">← Back</span>
+      <button class="btn-primary" style="margin-bottom:16px;" onclick="openAddAddress()">+ Add New Address</button>
+      <div id="addressesList"></div>
+      <div class="empty-state" id="addressesEmpty" style="display:none;">Koi saved address nahi hai</div>
+    </div>
+  </div>
+
+  <div class="auth-overlay" id="addressModal">
+    <div class="auth-card">
+      <button type="button" class="auth-close" onclick="closeAddressModal()">✕</button>
+      <h2 class="auth-title" id="addressModalTitle">Add Address</h2>
+      <input type="hidden" id="addressEditId">
+      <label class="auth-label">Label</label>
+      <div class="auth-field"><input id="addressLabel" placeholder="e.g. Home, Office"></div>
+      <label class="auth-label">Full Address</label>
+      <div class="auth-field"><input id="addressLine" placeholder="House no, street, city, pincode"></div>
+      <label class="auth-label">Phone Number</label>
+      <div class="auth-field"><input id="addressPhone" type="tel" placeholder="Contact number for delivery"></div>
+      <button type="button" class="auth-submit-btn" onclick="saveAddress()"><span>Save Address</span></button>
+    </div>
+  </div>
+
+  <!-- ============ MY COUPONS ============ -->
+  <div class="view" id="view-coupons">
+    <div class="section-title"><span>My Coupons</span></div>
+    <div style="padding:0 16px;">
+      <span class="back-btn" onclick="showView('account')">← Back</span>
+      <div id="myCouponsList"></div>
+      <div class="empty-state" id="myCouponsEmpty" style="display:none;">Abhi koi coupon available nahi hai</div>
+    </div>
+  </div>
+
+  <!-- ============ RECENTLY VIEWED ============ -->
+  <div class="view" id="view-recentlyViewed">
+    <div class="section-title"><span>Recently Viewed</span></div>
+    <div style="padding:0 16px;">
+      <span class="back-btn" onclick="showView('account')">← Back</span>
+      <div class="product-grid" id="recentlyViewedGrid"></div>
+      <div class="empty-state" id="recentlyViewedEmpty" style="display:none;">Abhi tak koi product view nahi kiya</div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS ============ -->
+  <div class="view" id="view-settings">
+    <div class="section-title"><span>Settings</span></div>
+    <div style="padding:0 16px;">
+      <span class="back-btn" onclick="showView('account')">← Back</span>
+      <div class="panel-card">
+        <div class="account-row">
+          <span>🔔 Order Update Alerts<br><small>Naye order status updates ka notification dikhayein</small></span>
+          <label class="settings-toggle"><input type="checkbox" id="notifSettingChk" checked onchange="saveNotificationSetting()"><span class="settings-toggle-track"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ NOTIFICATIONS ============ -->
+  <div class="view" id="view-notifications">
+    <div class="section-title"><span>Notifications</span></div>
+    <div style="padding:0 16px;">
+      <span class="back-btn" onclick="showView('account')">← Back</span>
+      <div id="myNotificationsList"></div>
+      <div class="empty-state" id="myNotificationsEmpty" style="display:none;">Koi naya notification nahi hai</div>
+    </div>
   </div>
 
 
@@ -460,11 +590,26 @@
   </div>
 
   <div class="bottom-nav">
-    <div class="nav-item active" data-nav="home" onclick="showView('home')"><span class="nav-icon">🏠</span><span>Home</span></div>
-    <div class="nav-item" data-nav="categoriesView" onclick="showView('categoriesView')"><span class="nav-icon">🗂️</span><span>Categories</span></div>
-    <div class="nav-item" data-nav="cart" onclick="showView('cart')"><span class="nav-icon">🛒<span class="nav-badge" id="navCartCount" style="display:none;">0</span></span><span>Cart</span></div>
-    <div class="nav-item" data-nav="orders" onclick="showView('orders')"><span class="nav-icon">📦</span><span>Orders</span></div>
-    <div class="nav-item" data-nav="account" onclick="showView('account')"><span class="nav-icon">👤</span><span>Account</span></div>
+    <div class="nav-item active" data-nav="home" onclick="showView('home')">
+      <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9v-6h6v6h2.5a1 1 0 0 0 1-1v-9"/></svg></span>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" data-nav="categoriesView" onclick="showView('categoriesView')">
+      <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span>
+      <span>Categories</span>
+    </div>
+    <div class="nav-item" data-nav="cart" onclick="showView('cart')">
+      <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2.5 3h2l2.2 11.4a1.8 1.8 0 0 0 1.8 1.5h8.6a1.8 1.8 0 0 0 1.77-1.47L20.5 7.5H6"/></svg><span class="nav-badge" id="navCartCount" style="display:none;">0</span></span>
+      <span>Cart</span>
+    </div>
+    <div class="nav-item" data-nav="orders" onclick="showView('orders')">
+      <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg></span>
+      <span>Orders</span>
+    </div>
+    <div class="nav-item" data-nav="account" onclick="showView('account')">
+      <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg></span>
+      <span>Account</span>
+    </div>
   </div>
 
 <script src="script.js"></script>

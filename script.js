@@ -320,6 +320,15 @@
     if (name === "checkout") renderCheckout();
     if (name === "orders") renderOrders();
     if (name === "home") renderGrid();
+    if (name === "account") loadMyAccountData();
+    if (name === "addresses") renderAddressesList();
+    if (name === "coupons") renderMyCoupons();
+    if (name === "recentlyViewed") renderRecentlyViewed();
+    if (name === "notifications") renderMyNotifications();
+    if (name === "settings"){
+      var chk = document.getElementById("notifSettingChk");
+      if (chk) chk.checked = loadNotificationSetting();
+    }
   }
   window.showView = showView;
 
@@ -557,6 +566,7 @@
     if (!p) return;
     state.currentDetailId = id;
     state.detailQty = 1;
+    trackRecentlyViewed(id);
     document.getElementById("detailImg").innerHTML = productImageHtml(p);
     document.getElementById("detailMallBadge").style.display = p.mall ? "inline-flex" : "none";
     document.getElementById("detailName").textContent = p.name;
@@ -826,6 +836,9 @@
   }
   window.placeOrder = placeOrder;
 
+  var liveOrdersByOrderId = {};
+  var ORDER_STATUS_COLORS = { Pending:"#F59E0B", Shipped:"#3B82F6", Delivered:"#22C55E", Cancelled:"#EF4444" };
+
   function renderOrders(){
     var wrap = document.getElementById("ordersList");
     if (state.orders.length === 0){
@@ -836,13 +849,15 @@
     document.getElementById("ordersEmpty").style.display = "none";
     wrap.innerHTML = state.orders.map(function(o){
       var itemsHtml = o.items.map(function(it){ return it.name + ' x' + it.qty; }).join(", ");
+      var liveStatus = liveOrdersByOrderId[o.orderId] || "Pending";
+      var color = ORDER_STATUS_COLORS[liveStatus] || "#F59E0B";
       return '' +
       '<div class="order-card">' +
         '<div class="order-id">Order ID: ' + o.orderId + ' &middot; ' + o.date + '</div>' +
         '<div style="margin:8px 0;font-size:14px;">' + itemsHtml + '</div>' +
         (o.coupon ? '<div style="font-size:12.5px;color:green;">Coupon applied: ' + o.coupon + ' (−₹' + (o.discount||0) + ')</div>' : '') +
         '<div style="font-weight:700;">Total: ₹' + o.total + ' &middot; ' + o.payment + '</div>' +
-        '<span class="order-status">✓ Order Confirmed</span>' +
+        '<span class="order-status" style="background:' + color + '22;color:' + color + ';">' + liveStatus + '</span>' +
       '</div>';
     }).join("");
   }
@@ -859,6 +874,296 @@
   }
   window.resetAllData = resetAllData;
 
+  // ================= My Account (profile, addresses, live order stats, coupons, recently viewed, settings, notifications) =================
+  var myProfile = { name:"", phone:"", addresses:[] };
+  var myOrdersUnsub = null;
+
+  function renderProfileHeader(){
+    var user = window.currentUser;
+    document.getElementById("profileNameDisplay").textContent = myProfile.name || (user ? user.email.split("@")[0] : "Khurja Mart Customer");
+    var phoneLine = document.getElementById("profilePhoneLine");
+    if (myProfile.phone){
+      phoneLine.style.display = "block";
+      document.getElementById("profilePhoneDisplay").textContent = myProfile.phone;
+    } else {
+      phoneLine.style.display = "none";
+    }
+  }
+
+  function renderAccountStats(){
+    document.getElementById("statAddresses").textContent = (myProfile.addresses||[]).length + " Saved";
+    document.getElementById("statWishlist").textContent = Object.keys(state.wishlist).length + " Items";
+    document.getElementById("statCoupons").textContent = (OFFERS.coupons||[]).length + " Available";
+  }
+
+  function renderOrderStats(orders){
+    var counts = { Pending:0, Shipped:0, Delivered:0, Cancelled:0 };
+    orders.forEach(function(o){
+      var st = o.status || "Pending";
+      if (counts[st] !== undefined) counts[st]++;
+    });
+    document.getElementById("ordAll").textContent = orders.length;
+    document.getElementById("ordPending").textContent = counts.Pending;
+    document.getElementById("ordShipped").textContent = counts.Shipped;
+    document.getElementById("ordDelivered").textContent = counts.Delivered;
+    document.getElementById("ordCancelled").textContent = counts.Cancelled;
+  }
+
+  function loadMyAccountData(){
+    if (!window.currentUser){
+      myProfile = { name:"", phone:"", addresses:[] };
+      renderAccountStats();
+      return;
+    }
+    if (typeof window.getUserProfile !== "function") { setTimeout(loadMyAccountData, 200); return; }
+    window.getUserProfile().then(function(data){
+      myProfile = Object.assign({ name:"", phone:"", addresses:[] }, data || {});
+      renderProfileHeader();
+      renderAccountStats();
+      renderAddressesList();
+      if (myProfile.phone && typeof window.subscribeToMyOrders === "function"){
+        if (myOrdersUnsub) myOrdersUnsub();
+        myOrdersUnsub = window.subscribeToMyOrders(myProfile.phone, function(orders){
+          liveOrdersByOrderId = {};
+          orders.forEach(function(o){ liveOrdersByOrderId[o.orderId] = o.status; });
+          renderOrderStats(orders);
+          renderOrders();
+          checkForNewOrderNotifications(orders);
+        });
+      } else {
+        renderOrderStats([]);
+      }
+    });
+  }
+  window.loadMyAccountData = loadMyAccountData;
+
+  // ---- Edit Profile ----
+  function openEditProfile(){
+    document.getElementById("editProfileName").value = myProfile.name || "";
+    document.getElementById("editProfilePhone").value = myProfile.phone || "";
+    document.getElementById("editProfileModal").style.display = "flex";
+  }
+  window.openEditProfile = openEditProfile;
+  function closeEditProfile(){
+    document.getElementById("editProfileModal").style.display = "none";
+  }
+  window.closeEditProfile = closeEditProfile;
+  function saveEditProfile(){
+    var name = document.getElementById("editProfileName").value.trim();
+    var phone = document.getElementById("editProfilePhone").value.trim();
+    if (!name){ showToast("Naam daalein"); return; }
+    myProfile.name = name;
+    myProfile.phone = phone;
+    window.saveUserProfile({ name:name, phone:phone }).then(function(ok){
+      if (ok){
+        showToast("Profile update ho gaya ✅");
+        renderProfileHeader();
+        closeEditProfile();
+        loadMyAccountData();
+      } else {
+        showToast("Save nahi hua, dobara try karein");
+      }
+    });
+  }
+  window.saveEditProfile = saveEditProfile;
+
+  // ---- My Addresses ----
+  function renderAddressesList(){
+    var wrap = document.getElementById("addressesList");
+    if (!wrap) return;
+    var list = myProfile.addresses || [];
+    var emptyEl = document.getElementById("addressesEmpty");
+    if (emptyEl) emptyEl.style.display = list.length === 0 ? "block" : "none";
+    wrap.innerHTML = list.map(function(a){
+      return '<div class="panel-card"><div class="account-row">' +
+        '<span><b>' + a.label + '</b><br><small>' + a.line + ' &middot; ' + a.phone + '</small></span>' +
+        '<span style="display:flex;gap:14px;">' +
+          '<span onclick="editAddress(\'' + a.id + '\')" style="color:var(--navy);">✏️</span>' +
+          '<span onclick="deleteAddress(\'' + a.id + '\')" style="color:var(--pink,#E74C3C);">🗑️</span>' +
+        '</span>' +
+      '</div></div>';
+    }).join("");
+  }
+  window.renderAddressesList = renderAddressesList;
+
+  function openAddAddress(){
+    if (!window.currentUser){ closeAddressModal(); requireLogin(function(){ openAddAddress(); }); return; }
+    document.getElementById("addressModalTitle").textContent = "Add Address";
+    document.getElementById("addressEditId").value = "";
+    document.getElementById("addressLabel").value = "";
+    document.getElementById("addressLine").value = "";
+    document.getElementById("addressPhone").value = "";
+    document.getElementById("addressModal").style.display = "flex";
+  }
+  window.openAddAddress = openAddAddress;
+
+  function editAddress(id){
+    var a = (myProfile.addresses||[]).filter(function(x){ return x.id === id; })[0];
+    if (!a) return;
+    document.getElementById("addressModalTitle").textContent = "Edit Address";
+    document.getElementById("addressEditId").value = id;
+    document.getElementById("addressLabel").value = a.label;
+    document.getElementById("addressLine").value = a.line;
+    document.getElementById("addressPhone").value = a.phone;
+    document.getElementById("addressModal").style.display = "flex";
+  }
+  window.editAddress = editAddress;
+
+  function closeAddressModal(){
+    document.getElementById("addressModal").style.display = "none";
+  }
+  window.closeAddressModal = closeAddressModal;
+
+  function saveAddress(){
+    var label = document.getElementById("addressLabel").value.trim();
+    var line = document.getElementById("addressLine").value.trim();
+    var phone = document.getElementById("addressPhone").value.trim();
+    var editId = document.getElementById("addressEditId").value;
+    if (!label || !line || !phone){ showToast("Sabhi fields bharein"); return; }
+    if (!myProfile.addresses) myProfile.addresses = [];
+    if (editId){
+      var idx = myProfile.addresses.findIndex(function(a){ return a.id === editId; });
+      if (idx !== -1) myProfile.addresses[idx] = { id:editId, label:label, line:line, phone:phone };
+    } else {
+      myProfile.addresses.push({ id: "addr" + Date.now(), label:label, line:line, phone:phone });
+    }
+    window.saveUserProfile({ addresses: myProfile.addresses }).then(function(ok){
+      if (ok){
+        showToast("Address save ho gaya ✅");
+        closeAddressModal();
+        renderAddressesList();
+        renderAccountStats();
+      } else {
+        showToast("Save nahi hua, dobara try karein");
+      }
+    });
+  }
+  window.saveAddress = saveAddress;
+
+  function deleteAddress(id){
+    if (!confirm("Ye address delete karna hai?")) return;
+    myProfile.addresses = (myProfile.addresses||[]).filter(function(a){ return a.id !== id; });
+    window.saveUserProfile({ addresses: myProfile.addresses }).then(function(ok){
+      if (ok){
+        showToast("Address delete ho gaya");
+        renderAddressesList();
+        renderAccountStats();
+      }
+    });
+  }
+  window.deleteAddress = deleteAddress;
+
+  // ---- My Coupons ----
+  function renderMyCoupons(){
+    var wrap = document.getElementById("myCouponsList");
+    if (!wrap) return;
+    var list = OFFERS.coupons || [];
+    document.getElementById("myCouponsEmpty").style.display = list.length === 0 ? "block" : "none";
+    wrap.innerHTML = list.map(function(c){
+      return '<div class="coupon-card">' +
+        '<div><div class="coupon-code">' + c.code + '</div><div class="coupon-desc">' + c.percent + '% off on your order</div></div>' +
+        '<button class="coupon-copy-btn" onclick="copyCouponCode(\'' + c.code + '\')">Copy</button>' +
+      '</div>';
+    }).join("");
+  }
+  window.renderMyCoupons = renderMyCoupons;
+
+  function copyCouponCode(code){
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(function(){ showToast("Coupon code copy ho gaya: " + code); });
+    } else {
+      showToast("Coupon code: " + code);
+    }
+  }
+  window.copyCouponCode = copyCouponCode;
+
+  // ---- Recently Viewed ----
+  var RECENTLY_VIEWED_KEY = "khurjaMartRecentlyViewed";
+  function loadRecentlyViewed(){
+    try{ return JSON.parse(localStorage.getItem(RECENTLY_VIEWED_KEY) || "[]"); }catch(e){ return []; }
+  }
+  function trackRecentlyViewed(id){
+    var list = loadRecentlyViewed();
+    list = list.filter(function(x){ return x !== id; });
+    list.unshift(id);
+    if (list.length > 20) list = list.slice(0, 20);
+    localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(list));
+  }
+  function renderRecentlyViewed(){
+    var grid = document.getElementById("recentlyViewedGrid");
+    if (!grid) return;
+    var ids = loadRecentlyViewed();
+    var products = ids.map(function(id){ return getProduct(id); }).filter(Boolean);
+    document.getElementById("recentlyViewedEmpty").style.display = products.length === 0 ? "block" : "none";
+    grid.innerHTML = products.map(productCardHtml).join("");
+  }
+  window.renderRecentlyViewed = renderRecentlyViewed;
+
+  // ---- Settings ----
+  var NOTIF_SETTING_KEY = "khurjaMartNotifSetting";
+  function loadNotificationSetting(){
+    var v = localStorage.getItem(NOTIF_SETTING_KEY);
+    return v === null ? true : v === "1";
+  }
+  function saveNotificationSetting(){
+    var chk = document.getElementById("notifSettingChk");
+    localStorage.setItem(NOTIF_SETTING_KEY, chk.checked ? "1" : "0");
+    showToast(chk.checked ? "Order update alerts ON" : "Order update alerts OFF");
+  }
+  window.saveNotificationSetting = saveNotificationSetting;
+
+  // ---- Notifications (real — generated from actual order status changes) ----
+  var SEEN_ORDER_STATUS_KEY = "khurjaMartSeenOrderStatus";
+  var NOTIF_LOG_KEY = "khurjaMartMyNotifLog";
+  function loadSeenStatus(){
+    try{ return JSON.parse(localStorage.getItem(SEEN_ORDER_STATUS_KEY) || "{}"); }catch(e){ return {}; }
+  }
+  function loadNotifLog(){
+    try{ return JSON.parse(localStorage.getItem(NOTIF_LOG_KEY) || "[]"); }catch(e){ return []; }
+  }
+  function checkForNewOrderNotifications(orders){
+    if (!loadNotificationSetting()) return;
+    var seen = loadSeenStatus();
+    var log = loadNotifLog();
+    var changed = false;
+    orders.forEach(function(o){
+      if (seen[o.orderId] !== o.status){
+        seen[o.orderId] = o.status;
+        log.unshift({ text: "Order " + o.orderId + " status: " + o.status, time: Date.now() });
+        changed = true;
+      }
+    });
+    if (changed){
+      if (log.length > 30) log = log.slice(0, 30);
+      localStorage.setItem(SEEN_ORDER_STATUS_KEY, JSON.stringify(seen));
+      localStorage.setItem(NOTIF_LOG_KEY, JSON.stringify(log));
+    }
+    renderNotifBadge();
+  }
+  function renderNotifBadge(){
+    var badge = document.getElementById("acctNotifBadge");
+    if (!badge) return;
+    var log = loadNotifLog();
+    var unseenCount = log.length; // simple: shows total recent updates; clears when notifications page opened
+    if (unseenCount > 0){ badge.textContent = unseenCount > 9 ? "9+" : unseenCount; badge.style.display = "flex"; }
+    else badge.style.display = "none";
+  }
+  function renderMyNotifications(){
+    var wrap = document.getElementById("myNotificationsList");
+    if (!wrap) return;
+    var log = loadNotifLog();
+    document.getElementById("myNotificationsEmpty").style.display = log.length === 0 ? "block" : "none";
+    wrap.innerHTML = log.map(function(n){
+      var mins = Math.floor((Date.now()-n.time)/60000);
+      var timeText = mins < 1 ? "abhi abhi" : mins < 60 ? mins+" min pehle" : Math.floor(mins/60)+" ghante pehle";
+      return '<div class="notif-item"><span class="notif-item-icon">🔔</span><div><div class="notif-item-text">' + n.text + '</div><div class="notif-item-time">' + timeText + '</div></div></div>';
+    }).join("");
+    // mark all as seen (badge clears)
+    localStorage.setItem(NOTIF_LOG_KEY, "[]");
+    renderNotifBadge();
+  }
+  window.renderMyNotifications = renderMyNotifications;
+
   document.addEventListener("DOMContentLoaded", function(){
     loadData();
     renderCategoryRow();
@@ -870,6 +1175,7 @@
     setupBannerSync();
     setupOffersSync();
     setupReviewsSync();
+    renderNotifBadge();
   });
 
   // ---- PWA: service worker + install prompt ----
