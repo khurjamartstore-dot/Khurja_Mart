@@ -16,14 +16,14 @@
   --purple-dark: var(--navy);
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins','Segoe UI',Roboto,Arial,sans-serif;}
-  body{background:var(--bg);color:#222;padding-bottom:calc(64px + env(safe-area-inset-bottom, 0px));}
+  body{background:var(--bg);color:#222;padding-bottom:60px;}
   button{cursor:pointer;font-family:inherit;border:none;background:none;}
   a{text-decoration:none;color:inherit;}
 
   /* ===== Top micro bar (global announcement strip) ===== */
   .top-strip{
     display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;
-    background:var(--navy);color:#EDEFF7;padding:8px max(16px, calc((100% - 1280px) / 2));font-size:11.5px;font-weight:500;
+    background:var(--navy);color:#EDEFF7;padding:8px 16px;font-size:11.5px;font-weight:500;
     letter-spacing:.1px;
   }
   .top-strip-item{display:flex;align-items:center;gap:7px;white-space:nowrap;opacity:.92;}
@@ -33,37 +33,30 @@
     .top-strip::-webkit-scrollbar{display:none;}
   }
 
-  /* ===== Trust bar (single row, icon+text inline — works on every phone
-     width: compact items with smooth horizontal scroll on narrow screens,
-     evenly spread on wider ones. Matches the reference single-row layout. */
+  /* ===== Trust bar (boxed, 4-item, sits inside home content) ===== */
   .trust-bar{
-    display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;
+    display:grid;grid-template-columns:1fr 1fr;gap:16px 10px;
     background:linear-gradient(135deg,var(--navy),var(--navy-2));
-    margin:18px 16px;border-radius:16px;padding:16px 18px;
-    -webkit-mask-image:linear-gradient(to right,#000 94%,transparent 100%);
-    mask-image:linear-gradient(to right,#000 94%,transparent 100%);
+    margin:18px 16px;border-radius:16px;padding:18px 14px;
   }
-  .trust-bar::-webkit-scrollbar{display:none;}
   .trust-item{
-    display:flex;align-items:center;gap:9px;flex:0 0 auto;min-width:0;
+    display:flex;align-items:center;gap:10px;min-width:0;
   }
-  @media (min-width:560px){
-    .trust-bar{justify-content:space-between;-webkit-mask-image:none;mask-image:none;}
-    .trust-item{flex:1 1 0;}
+  @media (min-width:640px){
+    .trust-bar{grid-template-columns:repeat(4,1fr);}
   }
   .trust-item .u-icon{
-    font-size:16px;color:#fff;width:34px;height:34px;border-radius:50%;
+    font-size:18px;color:#fff;width:38px;height:38px;border-radius:50%;
     background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;
   }
-  .trust-item .u-icon .ico{width:17px;height:17px;}
-  .trust-item .u-text{white-space:nowrap;}
-  .trust-item .u-text b{display:block;font-size:12px;color:#fff;font-weight:700;}
-  .trust-item .u-text span{font-size:10.5px;color:#C7CCE3;}
+  .trust-item .u-icon .ico{width:19px;height:19px;}
+  .trust-item .u-text b{display:block;font-size:12.5px;color:#fff;font-weight:700;}
+  .trust-item .u-text span{font-size:11px;color:#C7CCE3;}
 
   /* ===== Header ===== */
   header{
     display:flex;align-items:center;flex-wrap:wrap;gap:14px;
-    padding:14px max(16px, calc((100% - 1280px) / 2));border-bottom:1px solid var(--grey-border);position:sticky;top:0;background:#fff;z-index:50;
+    padding:14px 16px;border-bottom:1px solid var(--grey-border);position:sticky;top:0;background:#fff;z-index:50;
   }
   .logo-wrap{display:flex;align-items:center;gap:12px;flex:0 0 auto;}
   .hamburger{font-size:22px;color:var(--navy);flex-shrink:0;}
@@ -124,32 +117,8 @@
   .hero-banner{
     background:linear-gradient(135deg,#F3ECDC,#FBF8F1);
     margin:16px 16px 0;border-radius:20px;padding:0;position:relative;overflow:hidden;
-  }
-  /* Carousel stage: holds either the static hero-text/hero-visual pair,
-     or JS-rendered .hero-slide items (from Firebase). Fixed via min-height
-     + responsive breakpoints so the box never collapses/jumps between slides. */
-  #heroBannerSlides{
-    position:relative;width:100%;min-height:340px;
     display:flex;align-items:stretch;gap:18px;flex-wrap:wrap;
   }
-  /* Firebase-driven slides: always absolutely stacked on top of each other.
-     Only the .hs-active one is visible — others are fully invisible and
-     out of flow, so they can never bleed into the layout below. */
-  .hero-slide{
-    position:absolute;inset:0;width:100%;height:100%;
-    opacity:0;visibility:hidden;pointer-events:none;
-    transition:opacity .45s ease;border-radius:inherit;overflow:hidden;
-  }
-  .hero-slide.hs-active{opacity:1;visibility:visible;pointer-events:auto;}
-  .hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
-  .hero-slide-overlay{
-    position:absolute;left:0;right:0;bottom:0;padding:16px;
-    background:linear-gradient(transparent, rgba(0,0,0,.6));color:#fff;
-  }
-  @media (max-width:560px){ #heroBannerSlides{min-height:260px;} }
-  @media (min-width:700px){ #heroBannerSlides{min-height:400px;} }
-  @media (min-width:1024px){ #heroBannerSlides{min-height:470px;} }
-
   .hero-text{flex:1 1 240px;padding:34px 26px;display:flex;flex-direction:column;justify-content:center;}
   .hero-eyebrow{
     font-size:11px;font-weight:700;letter-spacing:2px;color:var(--navy);
@@ -171,21 +140,12 @@
   }
   .hero-visual .pot-emoji{filter:drop-shadow(0 10px 16px rgba(22,33,74,.18));}
   .hero-visual .pot-emoji:nth-child(2){font-size:80px;margin-bottom:-4px;}
-  /* Dots overlaid ON the banner image itself (bottom-center) — no extra
-     row/height added below the banner, so there's zero gap between the
-     photo and the next section. */
-  .hero-dots{
-    position:absolute;left:0;right:0;bottom:14px;
-    display:flex;gap:6px;justify-content:center;
-    padding:0;width:100%;z-index:5;pointer-events:none;
-  }
-  .hero-dots span{
-    width:7px;height:7px;border-radius:50%;background:var(--navy);opacity:.3;pointer-events:auto;
-  }
-  .hero-dots span.on{opacity:1;}
+  .hero-dots{display:flex;gap:6px;justify-content:center;padding:14px 0 16px;width:100%;}
+  .hero-dots span{width:7px;height:7px;border-radius:50%;background:#DCD0B4;}
+  .hero-dots span.on{background:var(--navy);width:18px;border-radius:4px;transition:width .2s;}
 
   /* ===== Section headers ===== */
-  .section-block{padding:14px 16px 6px;}
+  .section-block{padding:22px 16px 6px;}
   .section-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
   .section-title-row h2{font-size:19px;font-weight:800;color:var(--navy);}
   .view-all-link{font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:3px;}
@@ -197,8 +157,6 @@
   .categories{
     display:flex;gap:12px;overflow-x:auto;padding:2px 2px 10px;
     scrollbar-width:none;
-    -webkit-mask-image:linear-gradient(to right,#000 92%,transparent 100%);
-    mask-image:linear-gradient(to right,#000 92%,transparent 100%);
   }
   .categories::-webkit-scrollbar{display:none;}
   .cat-item{display:flex;flex-direction:column;align-items:center;gap:9px;flex:0 0 auto;width:84px;text-align:center;cursor:pointer;}
@@ -232,9 +190,7 @@
   .product-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px 4px;}
   .product-card{
     border:1px solid var(--grey-border);border-radius:14px;padding:10px;position:relative;background:#fff;
-    box-shadow:0 2px 8px rgba(22,33,74,.06);transition:box-shadow .15s,transform .15s;
   }
-  .product-card:active{box-shadow:0 4px 14px rgba(22,33,74,.12);}
   .heart-btn{position:absolute;top:18px;right:18px;font-size:16px;color:#bbb;z-index:5;background:#fff;
     width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     box-shadow:0 2px 6px rgba(0,0,0,.14);}
@@ -284,9 +240,7 @@
   .add-cart-btn:disabled,.add-cart-btn[disabled]{background:#F1F1F1;color:#aaa;border-color:#ddd;cursor:not-allowed;opacity:.85;}
 
   /* ===== New Arrivals row ===== */
-  .arrivals-row{display:flex;gap:12px;overflow-x:auto;padding:2px 16px 6px;scrollbar-width:none;
-    -webkit-mask-image:linear-gradient(to right,#000 94%,transparent 100%);
-    mask-image:linear-gradient(to right,#000 94%,transparent 100%);}
+  .arrivals-row{display:flex;gap:12px;overflow-x:auto;padding:2px 16px 6px;scrollbar-width:none;}
   .arrivals-row::-webkit-scrollbar{display:none;}
   .arrival-card{flex:0 0 auto;width:104px;cursor:pointer;}
   .arrival-img{width:104px;height:104px;border-radius:12px;background:#FAF9F5;border:1px solid var(--grey-border);
@@ -334,7 +288,7 @@
 
   /* ===== Views ===== */
   .view{display:none;}
-  .view.active{display:block;max-width:1280px;margin:0 auto;}
+  .view.active{display:block;}
 
   /* ===== Product Detail ===== */
   .detail-wrap{padding:16px;}
@@ -483,10 +437,9 @@
   /* ===== Bottom nav ===== */
   .bottom-nav{
     display:flex;border-top:1px solid var(--grey-border);position:fixed;bottom:0;left:0;right:0;background:#fff;z-index:60;
-    padding-top:2px;padding-bottom:env(safe-area-inset-bottom, 0px);
-    max-width:100vw;
+    padding-top:2px;
   }
-  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px 10px;font-size:11px;color:#8A8A8A;font-weight:600;position:relative;z-index:1;}
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px 10px;font-size:11px;color:#8A8A8A;font-weight:600;position:relative;}
   .nav-item.active{color:var(--navy);}
   .nav-item.active::after{
     content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);
@@ -498,15 +451,11 @@
     border-radius:50%;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 2px;
     box-shadow:0 0 0 2px #fff;
   }
-  /* Raised (FAB-style) cart icon: kept strictly inside its own nav-item box
-     via a small, fixed negative offset — never positioned relative to the
-     page, so it can't drift or overlap content above the nav bar. */
   .nav-item.nav-item-raised{padding-top:0;}
   .nav-item.nav-item-raised .nav-icon{
     width:52px;height:52px;border-radius:50%;background:var(--navy);color:#fff;
     align-items:center;justify-content:center;margin-top:-22px;
     box-shadow:0 6px 14px rgba(22,33,74,.35),0 0 0 4px #fff;
-    position:relative;z-index:1;
   }
   .nav-item.nav-item-raised.active .nav-icon{background:var(--navy-2);}
   .nav-item.nav-item-raised.active::after{display:none;}
@@ -590,9 +539,10 @@
 @media (max-width:480px){
   #heroBanner{
     width:auto !important;
+    position:static !important;
     left:auto !important;
     margin:14px 16px !important;
-    padding:0 !important;
+    padding:20px 16px !important;
     border-radius:14px !important;
   }
 }

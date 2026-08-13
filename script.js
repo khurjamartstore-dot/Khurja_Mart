@@ -157,10 +157,10 @@
     if (!slidesWrap || !dotsWrap) return;
 
     slidesWrap.innerHTML = banners.map(function(b, i){
-      return '<div class="hero-slide' + (i===0 ? " hs-active" : "") + '">' +
-        '<img src="' + b.img + '" alt="">' +
+      return '<div class="hero-slide" style="display:' + (i===0 ? "block" : "none") + ';width:100%;position:relative;border-radius:12px;overflow:hidden;">' +
+        '<img src="' + b.img + '" style="width:100%;height:auto;display:block;">' +
         ((b.title || b.sub || b.btnText) ?
-          '<div class="hero-slide-overlay">' +
+          '<div style="position:absolute;left:0;right:0;bottom:0;padding:16px;background:linear-gradient(transparent, rgba(0,0,0,0.6));color:#fff;">' +
             (b.title ? '<div class="hero-title" style="color:#fff;">' + b.title + '</div>' : '') +
             (b.sub ? '<div class="hero-sub" style="color:#eee;">' + b.sub + '</div>' : '') +
             (b.btnText ? '<span class="hero-btn" onclick="document.getElementById(\'productGrid\').scrollIntoView({behavior:\'smooth\'})">' + b.btnText + ' →</span>' : '') +
@@ -184,7 +184,7 @@
   function goToHeroSlide(i){
     var slides = document.querySelectorAll("#heroBannerSlides .hero-slide");
     var dots = document.querySelectorAll("#heroBannerDots span");
-    slides.forEach(function(s, idx){ s.classList.toggle("hs-active", idx === i); });
+    slides.forEach(function(s, idx){ s.style.display = idx === i ? "flex" : "none"; });
     dots.forEach(function(d, idx){ d.classList.toggle("on", idx === i); });
     heroBannerIndex = i;
   }
