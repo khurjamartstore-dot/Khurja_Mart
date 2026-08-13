@@ -1,4 +1,4 @@
-const CACHE_NAME = "khurja-mart-v2";
+const CACHE_NAME = "khurja-mart-v3";
 const ASSETS_TO_CACHE = [
   "./index.html",
   "./manifest.json",

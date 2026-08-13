@@ -201,6 +201,16 @@ window.subscribeToCategories = function (callback) {
   });
 };
 
+// Promo Tiles (the 2 tiles above New Arrivals — "Decor That Defines Your Space" /
+// "Perfect Gifts for Every Occasion") real-time — admin panel se edit hote hi turant website par
+window.subscribeToPromoTiles = function (callback) {
+  onSnapshot(doc(db, "config", "promoTiles"), (snap) => {
+    callback(snap.exists() ? (snap.data().items || []) : []);
+  }, (error) => {
+    console.warn("Promo tiles sync error:", error);
+  });
+};
+
 // Orders — website se place hote hi Firestore ki "orders" collection me save,
 // taaki admin panel real-time me naya order dekh sake. Guest checkout bhi
 // chalta hai (uid null rahega), login hone par uid/email order ke saath jud jaata hai.

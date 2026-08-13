@@ -12,7 +12,7 @@
 
 <!-- PWA setup -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#232A63">
+<meta name="theme-color" content="#16214A">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -22,9 +22,15 @@
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
 </head>
 <body style="overflow-x:hidden;">
+
+  <div class="top-strip">
+    <span class="top-strip-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Delivering Happiness in Khurja</span>
+    <span class="top-strip-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1.5"/><path d="M15 10h4l3 3.5V17h-7z"/><circle cx="6" cy="19.5" r="1.6"/><circle cx="17.5" cy="19.5" r="1.6"/></svg> Free Delivery on orders above ₹499</span>
+    <span class="top-strip-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12.5l2 2 4-4.5"/></svg> 7 Days Easy Returns</span>
+  </div>
 
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
   <div class="sidebar" id="sidebar">
@@ -41,30 +47,21 @@
   <header>
     <div class="logo-wrap">
       <span class="hamburger" onclick="openSidebar()">☰</span>
-      <span class="logo-badge">K</span>
+      <span class="logo-badge"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1.2 12a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
       <div class="logo-text" onclick="showView('home')">
         <span class="logo">Khurja <span>Mart</span></span>
-        <span class="tagline">&middot; Har Zarurat, Ek Jagah</span>
+        <span class="tagline">Plants &middot; Pottery &middot; Home &middot; Happiness</span>
       </div>
     </div>
     <div class="header-search">
-      <span class="mag">🔍</span>
-      <input id="searchInput" type="text" placeholder="Search for Khurja Pottery, Dinner Sets, Vases, Cups..." oninput="renderGrid()">
+      <input id="searchInput" type="text" placeholder="Search pottery, plants, home decor & more..." oninput="renderGrid()">
+      <button class="search-go-btn" onclick="renderGrid()" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
     </div>
-    <button class="search-go-btn" onclick="renderGrid()">Search</button>
     <div class="header-icons">
-      <span class="icon-btn wish-btn" onclick="showView('wishlist')">♥<span class="icon-label">Wishlist</span><span class="badge-count" id="wishCount" style="display:none;">0</span></span>
-      <span class="icon-btn" onclick="showView('cart')">🛒<span class="icon-label">Cart</span><span class="badge-count" id="cartCount" style="display:none;">0</span></span>
-      <span class="icon-btn" onclick="showView('account')">👤<span class="icon-label">Account</span></span>
+      <span class="icon-btn wish-btn" onclick="showView('wishlist')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span class="icon-label">Wishlist</span><span class="badge-count" id="wishCount" style="display:none;">0</span></span>
+      <span class="icon-btn" onclick="showView('cart')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 8H6"/></svg><span class="icon-label">Cart</span><span class="badge-count" id="cartCount" style="display:none;">0</span></span>
     </div>
   </header>
-
-  <div class="utility-bar">
-    <div class="utility-item"><span class="u-icon">🚚</span><span class="u-text"><b>Free Delivery</b><span>On orders above ₹999</span></span></div>
-    <div class="utility-item"><span class="u-icon">✅</span><span class="u-text"><b>100% Original</b><span>Khurja Pottery</span></span></div>
-    <div class="utility-item"><span class="u-icon">🏅</span><span class="u-text"><b>Premium Quality</b><span>Handcrafted</span></span></div>
-    <div class="utility-item"><span class="u-icon">🎧</span><span class="u-text"><b>Customer Support</b><span>24/7 Available</span></span></div>
-  </div>
 
   <!-- ============ HOME VIEW ============ -->
   <div class="view active" id="view-home">
@@ -72,14 +69,14 @@
   <div class="hero-banner" id="heroBanner">
       <div id="heroBannerSlides">
         <div class="hero-text">
-          <div class="hero-eyebrow">MADE IN KHURJA</div>
-          <div class="hero-title">Original Khurja<br><em>Pottery</em></div>
-          <div class="hero-sub">Handcrafted with Tradition,<br>Made for Your Home.</div>
+          <div class="hero-title">Bring Nature<br>Home</div>
+          <div class="hero-sub">Beautiful plants, handcrafted pottery &amp; home decor &ndash; all in one place.</div>
           <span class="hero-btn" onclick="document.getElementById('productGrid').scrollIntoView({behavior:'smooth'})">Shop Now →</span>
+          <div class="hero-badge-row"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1.2 12a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg> Handcrafted in Khurja</div>
         </div>
-        <div class="hero-visual">🫖🏺🍽️</div>
+        <div class="hero-visual"><span class="pot-emoji">🌿</span><span class="pot-emoji">🏺</span><span class="pot-emoji">🪴</span></div>
       </div>
-      <div class="hero-dots" id="heroBannerDots"><span class="on"></span></div>
+      <div class="hero-dots" id="heroBannerDots"><span class="on"></span><span></span><span></span></div>
     </div>
 
     <div class="section-block">
@@ -90,9 +87,16 @@
       <div class="categories" id="categoriesRow"></div>
     </div>
 
+    <div class="trust-bar">
+      <div class="trust-item"><span class="u-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 6 22l6-3 6 3-3-8.5"/></svg></span><span class="u-text"><b>Handcrafted in Khurja</b><span>Supporting local artisans</span></span></div>
+      <div class="trust-item"><span class="u-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></span><span class="u-text"><b>Premium Quality</b><span>Carefully selected products</span></span></div>
+      <div class="trust-item"><span class="u-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3.3 8.3L12 13l8.7-4.7"/><line x1="12" y1="13" x2="12" y2="22"/></svg></span><span class="u-text"><b>Safe Packaging</b><span>We pack with extra care</span></span></div>
+      <div class="trust-item"><span class="u-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18.5a5 5 0 0 0-10 0"/><circle cx="12" cy="10.5" r="3.5"/><circle cx="12" cy="12" r="9"/></svg></span><span class="u-text"><b>Happy Customers</b><span>Trusted by thousands</span></span></div>
+    </div>
+
     <div class="section-block">
       <div class="section-title">
-        <span>Best Selling Products</span>
+        <span>Best Picks For You</span>
         <span class="clear-btn" id="clearFilterBtn" style="display:none;" onclick="clearFilters()">Clear all ✕</span>
       </div>
 
@@ -124,6 +128,30 @@
     <div class="flash-products" id="flashProductsBox">
     </div>
 </section>
+
+    <div class="promo-grid" id="promoTilesRow">
+      <div class="promo-card navy" onclick="onCatClick('decor');showView('home')">
+        <span class="promo-card-emoji">🏺</span>
+        <h3>Decor That<br>Defines Your Space</h3>
+        <p>Stylish decor for a beautiful life.</p>
+        <span class="promo-card-btn">Explore Decor →</span>
+      </div>
+      <div class="promo-card cream" onclick="onCatClick('gifting');showView('home')">
+        <span class="promo-card-emoji">🎁</span>
+        <h3>Perfect Gifts for<br>Every Occasion</h3>
+        <p>Thoughtful. Useful. Beautiful.</p>
+        <span class="promo-card-btn">Explore Gifts →</span>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-title-row">
+        <h2>New Arrivals</h2>
+        <span class="view-all-link" onclick="showView('home')">View All ›</span>
+      </div>
+      <div class="arrivals-row" id="arrivalsRow"></div>
+    </div>
+
     <div class="promo-banner">
       <div class="promo-main">
         <div class="promo-icons">🏺🏺</div>
@@ -471,7 +499,7 @@
       </div>
 
       <div class="panel-card">
-        <div class="panel-card-head"><span>My Orders</span><span class="view-all-link" onclick="showView('orders')">View All Orders ›</span></div>
+        <div class="panel-card-head"><span>My Orders</span><span class="panel-view-all" onclick="showView('orders')">View All Orders ›</span></div>
         <div class="acct-orders-stats">
           <div class="order-stat-item" onclick="showView('orders')"><span class="order-stat-icon"><svg class="ico" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/></svg></span><span>All Orders</span><b id="ordAll">0</b></div>
           <div class="order-stat-item" title="Payment gateway jodne ke baad activate hoga" onclick="showToast('Ye payment gateway jodne ke baad activate hoga')"><span class="order-stat-icon"><svg class="ico" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2z"/><path d="M16 3H6a2 2 0 0 0-2 2v2h14"/><circle cx="17" cy="13" r="1.3"/></svg></span><span>To Pay</span><b>—</b></div>
@@ -601,7 +629,7 @@
       <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span>
       <span>Categories</span>
     </div>
-    <div class="nav-item" data-nav="cart" onclick="showView('cart')">
+    <div class="nav-item nav-item-raised" data-nav="cart" onclick="showView('cart')">
       <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2.5 3h2l2.2 11.4a1.8 1.8 0 0 0 1.8 1.5h8.6a1.8 1.8 0 0 0 1.77-1.47L20.5 7.5H6"/></svg><span class="nav-badge" id="navCartCount" style="display:none;">0</span></span>
       <span>Cart</span>
     </div>
@@ -611,7 +639,7 @@
     </div>
     <div class="nav-item" data-nav="account" onclick="showView('account')">
       <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg></span>
-      <span>Account</span>
+      <span>Profile</span>
     </div>
   </div>
 

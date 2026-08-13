@@ -1,27 +1,46 @@
 (function(){
   "use strict";
 
+  var ICO_PLANT = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-9"/><path d="M12 13c0-4 3-6 7-6 0 4-3 7-7 6z"/><path d="M12 13c0-3.2-2.4-4.8-5.6-4.8 0 3.2 2.4 5.6 5.6 4.8z"/><rect x="8.5" y="18" width="7" height="4" rx="1"/></svg>';
+  var ICO_POT = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1.5 12.5a1.5 1.5 0 0 1-1.5 1.5H9a1.5 1.5 0 0 1-1.5-1.5L6 8z"/><ellipse cx="12" cy="8" rx="7" ry="2.2"/></svg>';
+  var ICO_CUP = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z"/><path d="M16 9.5h1.5a2.5 2.5 0 0 1 0 5H16"/><line x1="8" y1="3" x2="8" y2="5"/></svg>';
+  var ICO_LAMP = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l3 6H5l3-6z"/><line x1="12" y1="10" x2="12" y2="18"/><line x1="8" y1="21" x2="16" y2="21"/></svg>';
+  var ICO_TOOL = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6-8.5 8.5a3 3 0 0 1-4.24 0 3 3 0 0 1 0-4.24L16 5"/><path d="M4 20l3-3"/></svg>';
+  var ICO_GIFT = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1.2"/><path d="M3 13h18"/><path d="M12 9v12"/><path d="M12 9C9 9 7.5 7.5 7.5 6A2.5 2.5 0 0 1 12 5c0 1-.5 4-.5 4z"/><path d="M12 9c3 0 4.5-1.5 4.5-3A2.5 2.5 0 0 0 12 5c0 1 .5 4 .5 4z"/></svg>';
+  var ICO_TAG = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3h6a3 3 0 0 1 3 3v6L11.5 21.5a2 2 0 0 1-2.8 0L3 15.7a2 2 0 0 1 0-2.8L12 3z"/><circle cx="16" cy="8" r="1.6"/></svg>';
+
   var CATEGORIES = [
-    {id:"vases", name:"Vases", icon:"🏺", img:""},
-    {id:"dinner", name:"Dinner Sets", icon:"🍽️", img:""},
-    {id:"cups", name:"Cups & Mugs", icon:"☕", img:""},
-    {id:"decor", name:"Decor", icon:"🕯️", img:""},
-    {id:"bowls", name:"Bowls", icon:"🥣", img:""}
+    {id:"plants", name:"Plants", icon:ICO_PLANT, img:""},
+    {id:"pots", name:"Pots & Planters", icon:ICO_POT, img:""},
+    {id:"crockery", name:"Crockery", icon:ICO_CUP, img:""},
+    {id:"decor", name:"Home Decor", icon:ICO_LAMP, img:""},
+    {id:"garden", name:"Garden Tools", icon:ICO_TOOL, img:""},
+    {id:"gifting", name:"Gifting", icon:ICO_GIFT, img:""},
+    {id:"offers", name:"Offers", icon:ICO_TAG, img:""}
   ];
 
   var PRODUCTS = [
-    {id:1, name:"Khurja Ceramic Blue Pottery Flower Vase, Handpainted", cat:"vases", icon:"🏺", price:399, oldPrice:999, mall:true, desc:"Traditional Khurja blue pottery vase, handpainted by local artisans. Perfect for fresh or dried flowers, adds an elegant touch to any room."},
-    {id:2, name:"Khurja Pottery Dinner Set, 24 Pieces, Hand Glazed", cat:"dinner", icon:"🍽️", price:1499, oldPrice:3499, mall:true, desc:"Complete 24-piece dinner set, hand glazed in classic Khurja style. Includes plates, bowls, and serving dishes. Microwave safe."},
-    {id:3, name:"Blue Pottery Ceramic Tea Cup & Saucer Set of 6", cat:"cups", icon:"☕", price:549, oldPrice:1199, mall:true, desc:"Set of 6 tea cups with matching saucers, finished in the iconic Khurja blue glaze. Ideal for daily use or gifting."},
-    {id:4, name:"Khurja Ceramic Serving Bowl, Handcrafted, Set of 4", cat:"bowls", icon:"🥣", price:699, oldPrice:1399, mall:true, desc:"Set of 4 handcrafted serving bowls, each piece slightly unique due to the handmade process. Dishwasher safe."},
+    {id:1, name:"Khurja Ceramic Blue Pottery Flower Vase, Handpainted", cat:"pots", icon:"🏺", price:399, oldPrice:999, mall:true, desc:"Traditional Khurja blue pottery vase, handpainted by local artisans. Perfect for fresh or dried flowers, adds an elegant touch to any room."},
+    {id:2, name:"Khurja Pottery Dinner Set, 24 Pieces, Hand Glazed", cat:"crockery", icon:"🍽️", price:1499, oldPrice:3499, mall:true, desc:"Complete 24-piece dinner set, hand glazed in classic Khurja style. Includes plates, bowls, and serving dishes. Microwave safe."},
+    {id:3, name:"Blue Pottery Ceramic Tea Cup & Saucer Set of 6", cat:"crockery", icon:"☕", price:549, oldPrice:1199, mall:true, desc:"Set of 6 tea cups with matching saucers, finished in the iconic Khurja blue glaze. Ideal for daily use or gifting."},
+    {id:4, name:"Khurja Ceramic Serving Bowl, Handcrafted, Set of 4", cat:"crockery", icon:"🥣", price:699, oldPrice:1399, mall:true, desc:"Set of 4 handcrafted serving bowls, each piece slightly unique due to the handmade process. Dishwasher safe."},
     {id:5, name:"Blue Pottery Decorative Candle Holder, Set of 2", cat:"decor", icon:"🕯️", price:329, oldPrice:699, mall:true, desc:"Pair of decorative candle holders in traditional blue pottery style, great for festive decor or gifting."},
-    {id:6, name:"Handpainted Ceramic Water Jug with Lid, Khurja Pottery", cat:"vases", icon:"🏺", price:599, oldPrice:1299, mall:true, desc:"Handpainted ceramic water jug with lid, keeps water naturally cool. A functional piece of Khurja craftsmanship."},
-    {id:7, name:"Khurja Pottery Soup Bowls with Handle, Set of 4", cat:"bowls", icon:"🥣", price:549, oldPrice:1099, mall:false, desc:"Set of 4 soup bowls with side handles for easy serving, glazed in soft pastel tones."},
-    {id:8, name:"Ceramic Coffee Mug Set, Blue Pottery Design, 4 Pcs", cat:"cups", icon:"☕", price:449, oldPrice:899, mall:true, desc:"Set of 4 coffee mugs featuring hand-painted blue pottery motifs, sturdy and microwave safe."},
-    {id:9, name:"Khurja Ceramic Dinner Plates, Set of 6, Floral Design", cat:"dinner", icon:"🍽️", price:899, oldPrice:1799, mall:false, desc:"Set of 6 dinner plates with traditional floral hand-painted designs, glazed for durability."},
+    {id:6, name:"Handpainted Ceramic Water Jug with Lid, Khurja Pottery", cat:"pots", icon:"🏺", price:599, oldPrice:1299, mall:true, desc:"Handpainted ceramic water jug with lid, keeps water naturally cool. A functional piece of Khurja craftsmanship."},
+    {id:7, name:"Khurja Pottery Soup Bowls with Handle, Set of 4", cat:"crockery", icon:"🥣", price:549, oldPrice:1099, mall:false, desc:"Set of 4 soup bowls with side handles for easy serving, glazed in soft pastel tones."},
+    {id:8, name:"Ceramic Coffee Mug Set, Blue Pottery Design, 4 Pcs", cat:"crockery", icon:"☕", price:449, oldPrice:899, mall:true, desc:"Set of 4 coffee mugs featuring hand-painted blue pottery motifs, sturdy and microwave safe."},
+    {id:9, name:"Khurja Ceramic Dinner Plates, Set of 6, Floral Design", cat:"crockery", icon:"🍽️", price:899, oldPrice:1799, mall:false, desc:"Set of 6 dinner plates with traditional floral hand-painted designs, glazed for durability."},
     {id:10, name:"Blue Pottery Wall Hanging Plates, Set of 3", cat:"decor", icon:"🕯️", price:749, oldPrice:1499, mall:true, desc:"Set of 3 decorative wall hanging plates, a beautiful way to showcase Khurja pottery art at home."},
-    {id:11, name:"Khurja Ceramic Fruit Bowl, Large, Handpainted", cat:"bowls", icon:"🥣", price:499, oldPrice:999, mall:false, desc:"Large handpainted fruit bowl, perfect centerpiece for dining tables, made using traditional techniques."},
-    {id:12, name:"Blue Pottery Flower Vase, Tall Neck, Handcrafted", cat:"vases", icon:"🏺", price:749, oldPrice:1599, mall:true, desc:"Tall neck flower vase in classic blue pottery style, handcrafted for a graceful, elegant look."}
+    {id:11, name:"Khurja Ceramic Fruit Bowl, Large, Handpainted", cat:"crockery", icon:"🥣", price:499, oldPrice:999, mall:false, desc:"Large handpainted fruit bowl, perfect centerpiece for dining tables, made using traditional techniques."},
+    {id:12, name:"Blue Pottery Flower Vase, Tall Neck, Handcrafted", cat:"pots", icon:"🏺", price:749, oldPrice:1599, mall:true, desc:"Tall neck flower vase in classic blue pottery style, handcrafted for a graceful, elegant look."},
+    {id:13, name:"Money Plant, Live Indoor Plant with Ceramic Pot", cat:"plants", icon:"🌿", price:199, oldPrice:249, mall:true, desc:"Easy-care money plant in a handcrafted ceramic pot, known to bring good luck and purify indoor air."},
+    {id:14, name:"Designer Blue Pottery Planter Pot", cat:"pots", icon:"🪴", price:339, oldPrice:399, mall:true, desc:"Hand-painted blue pottery planter, perfect for succulents and small indoor plants."},
+    {id:15, name:"Orange Plant, Live Fruit Plant with Pot", cat:"plants", icon:"🍊", price:299, oldPrice:399, mall:false, desc:"Compact orange fruit plant, grown and potted with care, great for balconies and patios."},
+    {id:16, name:"Khurja Pottery Gift Hamper, Festive Edition", cat:"gifting", icon:"🎁", price:899, oldPrice:1499, mall:true, desc:"Curated gift hamper featuring handpicked Khurja pottery pieces, beautifully packaged for gifting."}
+  ];
+
+  var PROMO_TILES = [
+    {title:"Decor That<br>Defines Your Space", sub:"Stylish decor for a beautiful life.", btnText:"Explore Decor", catId:"decor", emoji:"🏺", img:""},
+    {title:"Perfect Gifts for<br>Every Occasion", sub:"Thoughtful. Useful. Beautiful.", btnText:"Explore Gifts", catId:"gifting", emoji:"🎁", img:""}
   ];
 
   var state = {
@@ -68,6 +87,7 @@
   function refreshAfterCatalogUpdate(){
     renderCategoryRow();
     renderAllCategoriesList();
+    renderArrivals();
     var activeViewEl = document.querySelector(".view.active");
     if (!activeViewEl) return;
     if (activeViewEl.id === "view-home") renderGrid();
@@ -97,6 +117,35 @@
     });
   }
 
+  // ================= Promo Tiles (New Arrivals ke upar wale 2 tile) =================
+  // Design fix hai (2 tile: navy left, cream right) — Admin Panel se sirf image, title,
+  // subtitle, button text aur target category editable hain.
+  var PROMO_COLOR_CLASS = ["navy", "cream"];
+  function renderPromoTiles(){
+    var row = document.getElementById("promoTilesRow");
+    if (!row || !PROMO_TILES || PROMO_TILES.length === 0) return;
+    row.innerHTML = PROMO_TILES.slice(0, 2).map(function(t, i){
+      var media = t.img ? '<img src="' + t.img + '" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">' : '<span class="promo-card-emoji">' + (t.emoji || "🏺") + '</span>';
+      return '<div class="promo-card ' + (PROMO_COLOR_CLASS[i] || "navy") + '" onclick="onCatClick(\'' + (t.catId || "") + '\');showView(\'home\')">' +
+        media +
+        '<h3>' + (t.title || "") + '</h3>' +
+        '<p>' + (t.sub || "") + '</p>' +
+        '<span class="promo-card-btn">' + (t.btnText || "Explore") + ' →</span>' +
+      '</div>';
+    }).join("");
+  }
+
+  async function setupPromoTilesSync(){
+    await waitForFirebase();
+    if (typeof window.subscribeToPromoTiles !== "function") return;
+    window.subscribeToPromoTiles(function(fsTiles){
+      if (fsTiles && fsTiles.length > 0){
+        PROMO_TILES = fsTiles;
+        renderPromoTiles();
+      }
+    });
+  }
+
   // ================= Hero Banner Slider (Firebase real-time) =================
   var heroBannerTimer = null;
   var heroBannerIndex = 0;
@@ -108,10 +157,10 @@
     if (!slidesWrap || !dotsWrap) return;
 
     slidesWrap.innerHTML = banners.map(function(b, i){
-      return '<div class="hero-slide" style="display:' + (i===0 ? "block" : "none") + ';width:100%;position:relative;border-radius:12px;overflow:hidden;">' +
-        '<img src="' + b.img + '" style="width:100%;height:auto;display:block;">' +
+      return '<div class="hero-slide' + (i===0 ? " hs-active" : "") + '">' +
+        '<img src="' + b.img + '" alt="">' +
         ((b.title || b.sub || b.btnText) ?
-          '<div style="position:absolute;left:0;right:0;bottom:0;padding:16px;background:linear-gradient(transparent, rgba(0,0,0,0.6));color:#fff;">' +
+          '<div class="hero-slide-overlay">' +
             (b.title ? '<div class="hero-title" style="color:#fff;">' + b.title + '</div>' : '') +
             (b.sub ? '<div class="hero-sub" style="color:#eee;">' + b.sub + '</div>' : '') +
             (b.btnText ? '<span class="hero-btn" onclick="document.getElementById(\'productGrid\').scrollIntoView({behavior:\'smooth\'})">' + b.btnText + ' →</span>' : '') +
@@ -135,7 +184,7 @@
   function goToHeroSlide(i){
     var slides = document.querySelectorAll("#heroBannerSlides .hero-slide");
     var dots = document.querySelectorAll("#heroBannerDots span");
-    slides.forEach(function(s, idx){ s.style.display = idx === i ? "flex" : "none"; });
+    slides.forEach(function(s, idx){ s.classList.toggle("hs-active", idx === i); });
     dots.forEach(function(d, idx){ d.classList.toggle("on", idx === i); });
     heroBannerIndex = i;
   }
@@ -343,7 +392,8 @@
 
   function renderCategoryRow(){
     var row = document.getElementById("categoriesRow");
-    var html = '<div class="cat-item ' + (state.activeCategory === null ? "active" : "") + '" onclick="onCatClick(null)"><div class="cat-circle">▦</div><div class="cat-name">All</div></div>';
+    var icoAll = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>';
+    var html = '<div class="cat-item ' + (state.activeCategory === null ? "active" : "") + '" onclick="onCatClick(null)"><div class="cat-circle">' + icoAll + '</div><div class="cat-name">All</div></div>';
     CATEGORIES.forEach(function(c){
       html += '<div class="cat-item ' + (state.activeCategory === c.id ? "active" : "") + '" onclick="onCatClick(\'' + c.id + '\')"><div class="cat-circle">' + categoryImageHtml(c) + '</div><div class="cat-name">' + c.name + '</div></div>';
     });
@@ -425,26 +475,28 @@
     return (p && typeof p.stock === "number") ? p.stock : Infinity;
   }
 
+  var ICO_CART = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 8H6"/></svg>';
+
   function productCardHtml(p){
     var inCart = !!state.cart[p.id];
     var wished = !!state.wishlist[p.id];
     var stock = availableStock(p);
     var outOfStock = stock <= 0;
     var atMaxStock = !outOfStock && inCart && state.cart[p.id] >= stock;
-    var btnLabel = outOfStock ? "Out of Stock" : (inCart ? "✓ In Cart (" + state.cart[p.id] + ")" : "🛒 Add to Cart");
+    var btnLabel = outOfStock ? "Out of Stock" : (inCart ? "In Cart (" + state.cart[p.id] + ")" : (ICO_CART + " Add to Cart"));
     var btnDisabledAttr = outOfStock ? "disabled" : "";
+    var pct = discountPct(p);
     return '' +
     '<div class="product-card">' +
+      (pct > 0 ? '<span class="disc-badge">' + pct + '% OFF</span>' : '') +
       '<span class="heart-btn ' + (wished ? "active" : "") + '" onclick="toggleWishlist(' + p.id + ', event)">' + (wished ? "♥️" : "♡") + '</span>' +
       '<div class="product-img-wrap" onclick="openDetail(' + p.id + ')">' + productImageHtml(p) + '</div>' +
-      (p.mall ? '<span class="badge-mall">✓ Mall</span>' : '') +
-      (outOfStock ? '<span class="badge-mall" style="background:#EF4444;">Out of Stock</span>' : (stock <= 5 ? '<span class="badge-mall" style="background:#F59E0B;">Only ' + stock + ' left</span>' : '')) +
+      (p.mall ? '<span class="badge-mall">✓ Mall Verified</span>' : '') +
+      (outOfStock ? '<span class="badge-mall" style="color:#EF4444;">Out of Stock</span>' : (stock <= 5 ? '<span class="badge-mall" style="color:#F59E0B;">Only ' + stock + ' left</span>' : '')) +
       '<div class="product-name" onclick="openDetail(' + p.id + ')">' + p.name + '</div>' +
-      '<div class="rating-row">' + ratingRowHtml(p.name) + '</div>' +
       '<div class="price-row">' +
         '<span class="price-now">₹' + p.price + '</span>' +
         '<span class="price-old">₹' + p.oldPrice + '</span>' +
-        '<span class="price-off">' + discountPct(p) + '% off</span>' +
       '</div>' +
       '<button class="add-cart-btn ' + (inCart ? "in-cart" : "") + '" ' + btnDisabledAttr + ' onclick="quickAddToCart(' + p.id + ', event)">' + btnLabel + '</button>' +
     '</div>';
@@ -480,6 +532,18 @@
       '</div>';
     });
     wrap.innerHTML = html;
+  }
+
+  function renderArrivals(){
+    var row = document.getElementById("arrivalsRow");
+    if (!row) return;
+    var list = PRODUCTS.slice().sort(function(a,b){ return b.id - a.id; }).slice(0, 8);
+    row.innerHTML = list.map(function(p){
+      return '<div class="arrival-card" onclick="openDetail(' + p.id + ')">' +
+        '<div class="arrival-img">' + productImageHtml(p) + '</div>' +
+        '<div class="arrival-name">' + p.name + '</div>' +
+      '</div>';
+    }).join("");
   }
 
   // ================= Auth gate for Cart / Wishlist / Buy =================
@@ -1178,11 +1242,14 @@
     loadData();
     renderCategoryRow();
     renderAllCategoriesList();
+    renderArrivals();
+    renderPromoTiles();
     renderGrid();
     updateHeaderBadges();
     setupCatalogSync();
     setupCategorySync();
     setupBannerSync();
+    setupPromoTilesSync();
     setupOffersSync();
     setupReviewsSync();
     renderNotifBadge();
