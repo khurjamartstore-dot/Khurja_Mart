@@ -779,3 +779,252 @@
 @media (max-width:380px){
   .auth-card{padding:26px 18px 20px;border-radius:22px;}
 }
+/* ===== MOBILE VERSION — EXACTLY AS SCREENSHOT ===== */
+@media (max-width: 480px) {
+  /* Top Strip */
+  .top-strip {
+    display: none;
+  }
+
+  /* Header */
+  header {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 6px 10px;
+  }
+  .logo {
+    font-size: 14px;
+  }
+  .logo-text .tagline {
+    display: none;
+  }
+  .header-search {
+    flex: 1 1 100%;
+    order: 3;
+    min-width: unset;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .header-search input {
+    font-size: 11px;
+  }
+  .icon-btn .icon-label {
+    display: none;
+  }
+
+  /* Hero Banner */
+  .hero-banner {
+    flex-direction: column;
+    margin: 8px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  .hero-text {
+    padding: 4px 0;
+  }
+  .hero-title {
+    font-size: 20px;
+  }
+  .hero-sub {
+    font-size: 11px;
+  }
+  .hero-btn {
+    font-size: 11px;
+    padding: 6px 14px;
+  }
+  .hero-visual {
+    display: none;
+  }
+
+  /* Trust Bar */
+  .trust-bar {
+    display: none;
+  }
+
+  /* Product Grid — 2 Columns */
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 8px;
+  }
+  .product-card {
+    padding: 6px;
+    border-radius: 10px;
+  }
+  .product-name {
+    font-size: 10px;
+  }
+  .price-now {
+    font-size: 12px;
+  }
+  .price-old {
+    font-size: 9px;
+  }
+  .add-cart-btn {
+    font-size: 9px;
+    padding: 4px 0;
+  }
+  .heart-btn {
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+  .disc-badge {
+    font-size: 7px;
+    padding: 2px 4px;
+    top: 4px;
+    left: 4px;
+  }
+
+  /* Categories */
+  .categories {
+    gap: 6px;
+    padding: 2px 8px 6px;
+  }
+  .cat-item {
+    width: 56px;
+  }
+  .cat-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+  .cat-name {
+    font-size: 8px;
+    width: 56px;
+  }
+
+  /* Deals / Flash Sale */
+  .flash-sale {
+    margin: 8px;
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .flash-header h2 {
+    font-size: 14px;
+  }
+  .flash-products {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 4px;
+  }
+  .flash-card {
+    padding: 4px;
+    border-radius: 8px;
+  }
+  .flash-card h4 {
+    font-size: 8px;
+  }
+  .flash-card p {
+    font-size: 8px;
+  }
+  .flash-badge {
+    font-size: 6px;
+    padding: 1px 4px;
+  }
+
+  /* Promo Tiles */
+  .promo-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 8px;
+  }
+  .promo-card {
+    padding: 10px;
+    min-height: 80px;
+    border-radius: 10px;
+  }
+  .promo-card h3 {
+    font-size: 13px;
+  }
+  .promo-card p {
+    font-size: 9px;
+  }
+  .promo-card-btn {
+    font-size: 9px;
+    padding: 4px 10px;
+  }
+
+  /* New Arrivals */
+  .arrivals-row {
+    padding: 0 8px;
+    gap: 6px;
+  }
+  .arrival-card {
+    width: 60px;
+  }
+  .arrival-img {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+  }
+  .arrival-name {
+    font-size: 8px;
+  }
+
+  /* Promo Banner */
+  .promo-banner {
+    margin: 8px;
+    border-radius: 10px;
+  }
+  .promo-main {
+    padding: 10px;
+    gap: 6px;
+  }
+  .promo-text h3 {
+    font-size: 13px;
+  }
+  .promo-text p {
+    font-size: 9px;
+  }
+  .promo-btn {
+    font-size: 9px;
+    padding: 4px 10px;
+  }
+  .promo-features {
+    grid-template-columns: 1fr 1fr;
+  }
+  .promo-feature {
+    padding: 6px 8px;
+  }
+  .promo-feature b {
+    font-size: 9px;
+  }
+  .promo-feature span {
+    font-size: 7px;
+  }
+
+  /* Footer */
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 10px;
+  }
+  .footer-col h4 {
+    font-size: 10px;
+  }
+  .footer-col div {
+    font-size: 8px;
+  }
+  .footer-bottom {
+    font-size: 8px;
+    padding: 6px;
+  }
+
+  /* Bottom Nav */
+  .bottom-nav .nav-item {
+    font-size: 8px;
+    padding: 2px 0 4px;
+  }
+  .nav-item.nav-item-raised .nav-icon {
+    width: 32px;
+    height: 32px;
+    margin-top: -12px;
+  }
+  .nav-item .nav-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+}
