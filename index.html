@@ -47,21 +47,28 @@
   <header>
     <div class="logo-wrap">
       <span class="hamburger" onclick="openSidebar()">☰</span>
-      <span class="logo-badge"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1.2 12a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+      <span class="logo-badge"><img src="logo-k.png" alt="Khurja Mart" class="logo-badge-img"></span>
       <div class="logo-text" onclick="showView('home')">
         <span class="logo">Khurja <span>Mart</span></span>
         <span class="tagline">Plants &middot; Pottery &middot; Home &middot; Happiness</span>
       </div>
     </div>
     <div class="header-search">
+      <span class="search-icon-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
       <input id="searchInput" type="text" placeholder="Search pottery, plants, home decor & more..." oninput="renderGrid()">
       <button class="search-go-btn" onclick="renderGrid()" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+      <button type="button" class="mic-btn-mobile" onclick="document.getElementById('searchInput').focus()" aria-label="Voice search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/></svg></button>
     </div>
     <div class="header-icons">
       <span class="icon-btn wish-btn" onclick="showView('wishlist')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span class="icon-label">Wishlist</span><span class="badge-count" id="wishCount" style="display:none;">0</span></span>
       <span class="icon-btn" onclick="showView('cart')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 8H6"/></svg><span class="icon-label">Cart</span><span class="badge-count" id="cartCount" style="display:none;">0</span></span>
     </div>
   </header>
+
+  <div class="delivery-bar-mobile" id="deliveryBarMobile">
+    <span class="delivery-bar-left"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Delivering to <b>Khurja, Uttar Pradesh</b></span>
+    <span class="delivery-bar-change">Change ›</span>
+  </div>
 
   <!-- ============ HOME VIEW ============ -->
   <div class="view active" id="view-home">
@@ -92,6 +99,21 @@
       <div class="trust-item"><span class="u-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></span><span class="u-text"><b>Premium Quality</b><span>Carefully selected products</span></span></div>
       <div class="trust-item"><span class="u-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3.3 8.3L12 13l8.7-4.7"/><line x1="12" y1="13" x2="12" y2="22"/></svg></span><span class="u-text"><b>Safe Packaging</b><span>We pack with extra care</span></span></div>
       <div class="trust-item"><span class="u-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18.5a5 5 0 0 0-10 0"/><circle cx="12" cy="10.5" r="3.5"/><circle cx="12" cy="12" r="9"/></svg></span><span class="u-text"><b>Happy Customers</b><span>Trusted by thousands</span></span></div>
+    </div>
+
+    <div class="trust-bar-mobile" id="trustBarMobile">
+      <div class="tbm-item">
+        <span class="tbm-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1.5"/><path d="M15 10h4l3 3.5V17h-7z"/><circle cx="6" cy="19.5" r="1.6"/><circle cx="17.5" cy="19.5" r="1.6"/></svg></span>
+        <b>Free Delivery</b><span>on orders above ₹499</span>
+      </div>
+      <div class="tbm-item">
+        <span class="tbm-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 21v-5h5"/></svg></span>
+        <b>7 Days</b><span>Easy Returns</span>
+      </div>
+      <div class="tbm-item">
+        <span class="tbm-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.2 12.2l1.9 1.9 3.6-4"/></svg></span>
+        <b>Safe Packaging</b><span>Extra care for every order</span>
+      </div>
     </div>
 
     <div class="section-block">
@@ -128,6 +150,23 @@
     <div class="flash-products" id="flashProductsBox">
     </div>
 </section>
+
+    <div class="offer-banner-mobile" onclick="showView('cart')">
+      <div class="obm-text">
+        <span class="obm-eyebrow">First Order Offer</span>
+        <span class="obm-title">Get 10% OFF</span>
+        <span class="obm-code">Use Code: <b>KHURJA10</b></span>
+      </div>
+      <span class="obm-emoji">🎁</span>
+      <span class="obm-arrow">›</span>
+    </div>
+
+    <div class="section-block circle-cats-mobile">
+      <div class="section-title-row">
+        <h2>Categories You'll Love</h2>
+      </div>
+      <div class="cat-circle-row" id="categoriesCircleRow"></div>
+    </div>
 
     <div class="promo-grid" id="promoTilesRow">
       <div class="promo-card navy" onclick="onCatClick('decor');showView('home')">

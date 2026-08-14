@@ -399,6 +399,15 @@
     });
     row.innerHTML = html;
 
+    var circleRow = document.getElementById("categoriesCircleRow");
+    if (circleRow){
+      var circleHtml = "";
+      CATEGORIES.forEach(function(c){
+        circleHtml += '<div class="cat-circle-item" onclick="onCatClick(\'' + c.id + '\');showView(\'home\')"><div class="cat-circle-img">' + categoryImageHtml(c) + '</div><div class="cat-circle-name">' + c.name + '</div></div>';
+      });
+      circleRow.innerHTML = circleHtml;
+    }
+
     var sel = document.getElementById("catSelect");
     var optHtml = '<option value="">All</option>';
     CATEGORIES.forEach(function(c){ optHtml += '<option value="' + c.id + '">' + c.name + '</option>'; });
